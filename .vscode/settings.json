@@ -1,0 +1,9 @@
+{
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.sideBar.location": "left",
+  "workbench.tips.enabled": true,
+  "workbench.tree.enableStickyScroll": false,
+  "workbench.preferredLightColorTheme": "Visual Studio Dark",
+  "workbench.colorTheme": "Default Dark Modern",
+  "workbench.preferredHighContrastLightColorTheme": "Default Light Modern"
+}
