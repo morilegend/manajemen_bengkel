@@ -2,7 +2,7 @@
 
 This Project Using Flutter + Firebase
 - 2 User (Admin,Customer)
-- 
+
 - Admin
 - Can Check Report,
 - Create News
