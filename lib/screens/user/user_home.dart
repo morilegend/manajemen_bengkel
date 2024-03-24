@@ -16,7 +16,7 @@ class _UserHomeState extends State<UserHome> {
         centerTitle: true,
       ),
       body: Center(
-        child: const Text('Welcome to Admin Home'),
+        child: const Text('Welcome to User Home'),
       ),
     );
   }

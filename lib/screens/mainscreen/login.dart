@@ -18,8 +18,8 @@ class _LoginState extends State<Login> {
   late String saveemail = "";
   late String savepassword = "";
 
-  //Initilizaze
-  userLogin newUserLogin = userLogin();
+  //Initilizaze From userLogin --> UserLogin
+  userLogin UserLogin = userLogin();
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +89,7 @@ class _LoginState extends State<Login> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    newUserLogin.newUserLogin(saveemail, savepassword, context);
+                    UserLogin.LoginUser(saveemail, savepassword, context);
                   } else {
                     null;
                   }

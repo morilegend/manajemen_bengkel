@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:kp_manajemen_bengkel/screens/admin/settings_admin.dart';
+import 'package:kp_manajemen_bengkel/screens/admin/laporan_admin.dart';
+import 'package:kp_manajemen_bengkel/screens/admin/transaksi_admin.dart';
 
 class AdminHome extends StatefulWidget {
   const AdminHome({Key? key}) : super(key: key);
