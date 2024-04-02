@@ -11,10 +11,10 @@ class getNewsData {
         if (data != null) {
           dataList.add({
             'urlimage': data['urlimage'],
-            'source': data['source'],
+            'header': data['header'],
             'tittle': data['tittle'],
             'descr': data['descr'],
-            'publish': data['publish'],
+            'date': data['date'],
           });
         }
       });

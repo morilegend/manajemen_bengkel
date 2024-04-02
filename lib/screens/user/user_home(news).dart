@@ -16,12 +16,13 @@ class _UserHomeState extends State<UserHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-        future:
-            getNew.getNew(), // Memanggil fungsi getNew untuk mendapatkan data
+        future: getNew.getNew(),
         builder: (BuildContext context,
             AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator(); // Tampilkan indikator loading jika sedang memuat data
+            return Center(
+                child:
+                    CircularProgressIndicator()); // Tampilkan indikator loading jika sedang memuat data
           } else {
             // Jika data berhasil dimuat, tampilkan ListView.builder
             return ListView.builder(
@@ -49,7 +50,7 @@ class _UserHomeState extends State<UserHome> {
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black12,
-                          blurRadius: 3.0,
+                          blurRadius: 6.0,
                         ),
                       ],
                     ),
@@ -58,7 +59,7 @@ class _UserHomeState extends State<UserHome> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          height: 200.0,
+                          height: 150.0,
                           width: double.infinity,
                           decoration: BoxDecoration(
                             image: DecorationImage(
@@ -75,23 +76,43 @@ class _UserHomeState extends State<UserHome> {
                           padding: EdgeInsets.all(6.0),
                           decoration: BoxDecoration(
                             color: Color.fromARGB(255, 117, 117, 138),
-                            borderRadius: BorderRadius.circular(30.0),
+                            borderRadius: BorderRadius.circular(5.0),
                           ),
-                          child: Text(
-                            news['source'] ?? null,
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(news['header'] ?? null,
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 15.0),
+                                    overflow: TextOverflow.visible),
+                              )
+                            ],
                           ),
                         ),
                         SizedBox(
-                          height: 8.0,
+                          height: 4.0,
                         ),
-                        Text(
-                          news['tittle'] ?? null,
-                          style: TextStyle(
-                            fontSize: 16.0,
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                news['tittle'] ?? '',
+                                style: TextStyle(
+                                  fontSize: 13.0,
+                                ),
+                                overflow: TextOverflow
+                                    .visible, // Membuat sebuah text panjang menggunakan expand
+                              ),
+                            ),
+                            Text(
+                              news['date'] ?? '',
+                              style: TextStyle(
+                                fontSize: 13.0,
+                                color: const Color.fromARGB(255, 114, 114, 114),
+                              ),
+                            )
+                          ],
                         ),
                       ],
                     ),
