@@ -1,13 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:kp_manajemen_bengkel/screens/admin/admin_home.dart';
-import 'package:kp_manajemen_bengkel/screens/admin/laporan_admin.dart';
-import 'package:kp_manajemen_bengkel/screens/admin/settings_admin.dart';
-import 'package:kp_manajemen_bengkel/screens/admin/transaksi_admin.dart';
-import 'package:kp_manajemen_bengkel/screens/user/Sewa_)asa_user.dart';
+import 'package:kp_manajemen_bengkel/screens/user/Sewa_Jasa_user.dart';
 import 'package:kp_manajemen_bengkel/screens/user/history_pesanan_user.dart';
 import 'package:kp_manajemen_bengkel/screens/user/settings_user.dart';
-import 'package:kp_manajemen_bengkel/screens/user/user_home.dart';
+import 'package:kp_manajemen_bengkel/screens/user/user_home(news).dart';
 
 class NavbarUser extends StatefulWidget {
   const NavbarUser({Key? key}) : super(key: key);
@@ -20,10 +16,10 @@ class _NavbarUserState extends State<NavbarUser> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
-    const UserHome(),
-    const SewaJasaUser(),
-    const HistoryPesananUser(),
-    const SettingsUser()
+    UserHome(),
+    SewaJasaUser(),
+    HistoryPesananUser(),
+    SettingsUser()
   ];
 
   void _onItemTapped(int index) {

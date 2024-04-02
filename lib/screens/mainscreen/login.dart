@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kp_manajemen_bengkel/screens/mainscreen/register.dart';
-import 'package:kp_manajemen_bengkel/screens/manager/manager_home.dart';
-import 'package:kp_manajemen_bengkel/screens/user/user_home.dart';
-import 'package:kp_manajemen_bengkel/screens/admin/admin_home.dart';
-import 'package:kp_manajemen_bengkel/services/loginuser.dart';
+import 'package:kp_manajemen_bengkel/services/user.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);

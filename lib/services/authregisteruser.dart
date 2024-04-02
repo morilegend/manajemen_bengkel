@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 //email: admin@admin.com password: admin123
 //email: manager@manager.com password: manager123
-//email: testi1@gmail.com password: testi123
+//email: testi123@gmail.com password: testi123
 
 class userRegister {
   final DatabaseReference _databaseReference =

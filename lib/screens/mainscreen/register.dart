@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kp_manajemen_bengkel/screens/mainscreen/login.dart';
-import 'package:kp_manajemen_bengkel/services/authregisteruser.dart';
+import 'package:kp_manajemen_bengkel/services/user.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -96,6 +96,8 @@ class _RegisterState extends State<Register> {
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Nomor tidak boleh kosong';
+                    } else if (!RegExp(r'[0-9]').hasMatch(value)) {
+                      return 'Nomor hanya boleh berisi angka';
                     }
                     return null;
                   },

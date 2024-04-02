@@ -5,10 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 //Import Screens
-import 'package:kp_manajemen_bengkel/screens/admin/admin_home.dart';
 import 'package:kp_manajemen_bengkel/screens/mainscreen/login.dart';
-import 'package:kp_manajemen_bengkel/screens/manager/manager_home.dart';
-import 'package:kp_manajemen_bengkel/screens/user/user_home.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
