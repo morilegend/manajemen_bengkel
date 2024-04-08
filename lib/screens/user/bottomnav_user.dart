@@ -1,9 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kp_manajemen_bengkel/screens/user/Sewa_Jasa_user.dart';
-import 'package:kp_manajemen_bengkel/screens/user/history_pesanan_user.dart';
-import 'package:kp_manajemen_bengkel/screens/user/settings_user.dart';
+import 'package:kp_manajemen_bengkel/screens/user/Services_User.dart';
+import 'package:kp_manajemen_bengkel/screens/user/Order_User.dart';
+import 'package:kp_manajemen_bengkel/screens/user/Account_User.dart';
+import 'package:kp_manajemen_bengkel/screens/user/news_detailScreen.dart';
 import 'package:kp_manajemen_bengkel/screens/user/user_home(news).dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:lottie/lottie.dart';
 
 class NavbarUser extends StatefulWidget {
   const NavbarUser({Key? key}) : super(key: key);
@@ -13,61 +16,66 @@ class NavbarUser extends StatefulWidget {
 }
 
 class _NavbarUserState extends State<NavbarUser> {
-  int _selectedIndex = 0;
-
-  final List<Widget> _screens = [
-    UserHome(),
-    SewaJasaUser(),
-    HistoryPesananUser(),
-    SettingsUser()
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
+  PersistentTabController _controller = PersistentTabController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _screens[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Color.fromARGB(255, 117, 117, 138),
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        selectedItemColor: Colors.yellow,
-        unselectedItemColor: Color(0xffd2d180),
-        items: <BottomNavigationBarItem>[
-          // Perbaikan untuk BottomNavBar
-          BottomNavigationBarItem(
-              icon: _selectedIndex == 0
-                  ? Icon(Icons.home, color: Colors.yellow)
-                  : Icon(Icons.home_outlined, color: Color(0xffd2d180)),
-              label: 'Home'),
-          // Perbaikan untuk BottomNavBar
-          BottomNavigationBarItem(
-            icon: _selectedIndex == 1
-                ? Icon(Icons.car_rental, color: Colors.yellow)
-                : Icon(Icons.car_rental_outlined, color: Color(0xffd2d180)),
-            label: 'Sewa Jasa',
-          ),
-          BottomNavigationBarItem(
-            icon: _selectedIndex == 2
-                ? Icon(Icons.history, color: Colors.yellow)
-                : Icon(Icons.history_outlined, color: Color(0xffd2d180)),
-            label: 'History',
-          ),
-          BottomNavigationBarItem(
-            icon: _selectedIndex == 3
-                ? Icon(Icons.manage_accounts, color: Colors.yellow)
-                : Icon(Icons.manage_accounts_outlined,
-                    color: Color(0xffd2d180)),
-            label: 'Akun',
-          ),
+      body: PersistentTabView(
+        navBarHeight: 60,
+        decoration: NavBarDecoration(
+          colorBehindNavBar: Color.fromRGBO(231, 229, 93, 1),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          boxShadow: [
+            BoxShadow(color: Colors.black.withOpacity(0.5), blurRadius: 5)
+          ],
+        ),
+        backgroundColor: Color.fromRGBO(231, 229, 93, 1),
+        context,
+        controller: _controller,
+        screens: [
+          UserHome(),
+          ServicesUser(),
+          OrderUsers(),
+          AccountUser(),
         ],
+        hideNavigationBar: false,
+        items: _navBarsItems(),
+        navBarStyle: NavBarStyle.style10,
       ),
     );
+  }
+
+  List<PersistentBottomNavBarItem> _navBarsItems() {
+    return [
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.home),
+        title: ("Home"),
+        activeColorPrimary: Colors.black,
+        activeColorSecondary: Color.fromRGBO(231, 229, 93, 1),
+        inactiveColorPrimary: Colors.black,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.car_crash),
+        title: ("Services"),
+        activeColorPrimary: Colors.black,
+        activeColorSecondary: Color.fromRGBO(231, 229, 93, 1),
+        inactiveColorPrimary: Colors.black,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.note_alt_sharp),
+        title: ("Order"),
+        activeColorPrimary: Colors.black,
+        activeColorSecondary: Color.fromRGBO(231, 229, 93, 1),
+        inactiveColorPrimary: Colors.black,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.settings),
+        title: ("Account"),
+        activeColorPrimary: Colors.black,
+        activeColorSecondary: Color.fromRGBO(231, 229, 93, 1),
+        inactiveColorPrimary: Colors.black,
+      ),
+    ];
   }
 }

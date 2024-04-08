@@ -7,58 +7,66 @@ class newsDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Implementasi halaman detail berita di sini
     return Scaffold(
-        body: SingleChildScrollView(
-      child: Container(
+      appBar: AppBar(),
+      body: SingleChildScrollView(
+        child: Container(
           margin: EdgeInsets.all(5.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                height: 200.0,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(news['urlimage'] ?? null),
-                      fit: BoxFit.cover,
-                    ),
-                    borderRadius: BorderRadius.circular(12.0)),
-              ),
-
-              // Container Tittle
-              Container(
-                margin: EdgeInsets.only(top: 10.0),
-                decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 209, 209, 209),
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 30.0,
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      news['tittle'] ?? '',
+                      style: TextStyle(
+                        color: const Color.fromARGB(255, 0, 0, 0),
+                        fontSize: 26.0,
+                        fontWeight: FontWeight.bold,
                       ),
-                    ]),
+                      overflow: TextOverflow.fade,
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 10, bottom: 10),
                 child: Row(
                   children: [
                     Expanded(
                       child: Text(
-                        news['header'] ?? null,
+                        news['date'] ?? '',
                         style: TextStyle(
-                            color: const Color.fromARGB(255, 0, 0, 0),
-                            fontSize: 26.0,
-                            fontWeight: FontWeight.bold),
-                        overflow: TextOverflow.visible,
+                          color: Color.fromRGBO(116, 117, 137, 1),
+                          fontSize: 15.0,
+                        ),
+                        overflow: TextOverflow.clip,
                       ),
                     ),
                   ],
                 ),
               ),
+              SizedBox(
+                height: 10,
+              ),
               Container(
+                height: 200.0,
+                width: double.infinity,
                 decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 255, 255, 255),
-                  borderRadius:
-                      BorderRadius.vertical(bottom: Radius.circular(10.0)),
+                  image: DecorationImage(
+                    image: NetworkImage(news['urlimage'] ?? ''),
+                    fit: BoxFit.cover,
+                  ),
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 10.0),
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 209, 209, 209),
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black12,
@@ -66,22 +74,28 @@ class newsDetailScreen extends StatelessWidget {
                     ),
                   ],
                 ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 50),
                 child: Row(
                   children: [
                     Expanded(
                       child: Text(
-                        news['descr'] ?? null,
+                        news['descr'] ?? '',
                         style: TextStyle(
-                            color: const Color.fromARGB(255, 0, 0, 0),
-                            fontSize: 15.0),
-                        overflow: TextOverflow.visible,
+                          color: const Color.fromARGB(255, 0, 0, 0),
+                          fontSize: 15.0,
+                        ),
+                        overflow: TextOverflow.fade,
                       ),
                     ),
                   ],
                 ),
               ),
             ],
-          )),
-    ));
+          ),
+        ),
+      ),
+    );
   }
 }

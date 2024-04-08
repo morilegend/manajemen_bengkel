@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+//User
 class getNewsData {
   Future<List<Map<String, dynamic>>> getNew() async {
     try {
@@ -11,10 +12,11 @@ class getNewsData {
         if (data != null) {
           dataList.add({
             'urlimage': data['urlimage'],
-            'header': data['header'],
             'tittle': data['tittle'],
             'descr': data['descr'],
             'date': data['date'],
+            'likes': data['likes'],
+            'map': data['map']
           });
         }
       });
@@ -24,3 +26,6 @@ class getNewsData {
     }
   }
 }
+
+//Admin Post
+class postNewsData {}
