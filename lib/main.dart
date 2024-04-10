@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
       //   brightness: Brightness.dark,
       // ),
       debugShowCheckedModeBanner: false,
-      home: Login(),
+      home: NavbarUser(),
     );
   }
 }

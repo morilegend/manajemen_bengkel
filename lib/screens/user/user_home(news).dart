@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kp_manajemen_bengkel/screens/user/bottomnav_user.dart';
 import 'package:kp_manajemen_bengkel/screens/user/favorite_news.dart';
-import 'package:kp_manajemen_bengkel/screens/user/news_detailScreen.dart';
+import 'package:kp_manajemen_bengkel/screens/detail_screens/news_detailScreen.dart';
 import 'package:kp_manajemen_bengkel/services/news.dart';
 
 class UserHome extends StatefulWidget {

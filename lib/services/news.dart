@@ -6,11 +6,11 @@ class getNewsData {
     try {
       QuerySnapshot<Map<String, dynamic>> querySnapshot =
           await FirebaseFirestore.instance.collection('news').get();
-      List<Map<String, dynamic>> dataList = [];
+      List<Map<String, dynamic>> dataListNews = [];
       querySnapshot.docs.forEach((doc) {
         Map<String, dynamic>? data = doc.data();
         if (data != null) {
-          dataList.add({
+          dataListNews.add({
             'urlimage': data['urlimage'],
             'tittle': data['tittle'],
             'descr': data['descr'],
@@ -20,7 +20,7 @@ class getNewsData {
           });
         }
       });
-      return dataList;
+      return dataListNews;
     } catch (error) {
       throw error;
     }

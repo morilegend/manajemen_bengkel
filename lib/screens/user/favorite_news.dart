@@ -15,7 +15,7 @@ class _FavoriteNewsUserState extends State<FavoriteNewsUser> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Container(),
+      body: Container(color: Colors.yellow),
     );
   }
 }

@@ -3,79 +3,79 @@ import 'package:flutter/material.dart';
 import 'package:kp_manajemen_bengkel/screens/user/Services_User.dart';
 import 'package:kp_manajemen_bengkel/screens/user/Order_User.dart';
 import 'package:kp_manajemen_bengkel/screens/user/Account_User.dart';
-import 'package:kp_manajemen_bengkel/screens/user/news_detailScreen.dart';
+import 'package:kp_manajemen_bengkel/screens/user/favorite_news.dart';
 import 'package:kp_manajemen_bengkel/screens/user/user_home(news).dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:lottie/lottie.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 
 class NavbarUser extends StatefulWidget {
-  const NavbarUser({Key? key}) : super(key: key);
-
   @override
-  State<NavbarUser> createState() => _NavbarUserState();
+  NavbarUserState createState() => NavbarUserState();
 }
 
-class _NavbarUserState extends State<NavbarUser> {
-  PersistentTabController _controller = PersistentTabController();
+class NavbarUserState extends State<NavbarUser> {
+  int _selectedIndex = 0;
+  static List<Widget> _widgetOptions = <Widget>[
+    UserHome(),
+    ServicesUser(),
+    OrderUsers(),
+    AccountUser(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PersistentTabView(
-        navBarHeight: 60,
-        decoration: NavBarDecoration(
-          colorBehindNavBar: Color.fromRGBO(231, 229, 93, 1),
+      extendBody: true,
+      body: _widgetOptions[_selectedIndex],
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: Color.fromRGBO(231, 229, 93, 1),
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           boxShadow: [
-            BoxShadow(color: Colors.black.withOpacity(0.5), blurRadius: 5)
+            BoxShadow(color: Colors.grey, blurRadius: 10, spreadRadius: 1)
           ],
         ),
-        backgroundColor: Color.fromRGBO(231, 229, 93, 1),
-        context,
-        controller: _controller,
-        screens: [
-          UserHome(),
-          ServicesUser(),
-          OrderUsers(),
-          AccountUser(),
-        ],
-        hideNavigationBar: false,
-        items: _navBarsItems(),
-        navBarStyle: NavBarStyle.style10,
+        child: Padding(
+          padding:
+              const EdgeInsets.only(top: 10.0, bottom: 5, left: 30, right: 30),
+          child: GNav(
+            rippleColor: Color.fromARGB(255, 0, 0, 0)!,
+            hoverColor: Color.fromARGB(255, 0, 0, 0)!,
+            gap: 6,
+            activeColor: Color.fromRGBO(231, 229, 93, 1),
+            iconSize: 24,
+            padding: EdgeInsets.symmetric(horizontal: 7, vertical: 8),
+            duration: Duration(milliseconds: 400),
+            tabBackgroundColor: const Color.fromARGB(255, 0, 0, 0)!,
+            tabBorderRadius: 10,
+            color: Colors.black,
+            tabs: [
+              GButton(
+                icon: Icons.home,
+                text: 'Services',
+              ),
+              GButton(
+                icon: Icons.car_crash,
+                text: 'Order',
+              ),
+              GButton(
+                icon: Icons.note_alt,
+                text: 'Profile',
+              ),
+              GButton(
+                icon: Icons.settings,
+                text: 'Settings',
+              ),
+            ],
+            selectedIndex: _selectedIndex,
+            onTabChange: (index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+          ),
+        ),
       ),
     );
-  }
-
-  List<PersistentBottomNavBarItem> _navBarsItems() {
-    return [
-      PersistentBottomNavBarItem(
-        icon: Icon(Icons.home),
-        title: ("Home"),
-        activeColorPrimary: Colors.black,
-        activeColorSecondary: Color.fromRGBO(231, 229, 93, 1),
-        inactiveColorPrimary: Colors.black,
-      ),
-      PersistentBottomNavBarItem(
-        icon: Icon(Icons.car_crash),
-        title: ("Services"),
-        activeColorPrimary: Colors.black,
-        activeColorSecondary: Color.fromRGBO(231, 229, 93, 1),
-        inactiveColorPrimary: Colors.black,
-      ),
-      PersistentBottomNavBarItem(
-        icon: Icon(Icons.note_alt_sharp),
-        title: ("Order"),
-        activeColorPrimary: Colors.black,
-        activeColorSecondary: Color.fromRGBO(231, 229, 93, 1),
-        inactiveColorPrimary: Colors.black,
-      ),
-      PersistentBottomNavBarItem(
-        icon: Icon(Icons.settings),
-        title: ("Account"),
-        activeColorPrimary: Colors.black,
-        activeColorSecondary: Color.fromRGBO(231, 229, 93, 1),
-        inactiveColorPrimary: Colors.black,
-      ),
-    ];
   }
 }
