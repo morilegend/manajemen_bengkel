@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
 import 'package:kp_manajemen_bengkel/screens/user/bottomnav_user.dart';
 import 'package:kp_manajemen_bengkel/screens/user/favorite_news.dart';
-import 'package:kp_manajemen_bengkel/screens/detail_screens/news_detailScreen.dart';
+import 'package:kp_manajemen_bengkel/screens/detail_screens/news_detailScreenUser.dart';
 import 'package:kp_manajemen_bengkel/services/news.dart';
 
 class UserHome extends StatefulWidget {
@@ -11,11 +12,11 @@ class UserHome extends StatefulWidget {
   State<UserHome> createState() => _UserHomeState();
 }
 
-getNewsData getNew = getNewsData();
-TextEditingController _SearchController = TextEditingController();
-String _SearchText = '';
-
 class _UserHomeState extends State<UserHome> {
+  TextEditingController _searchController = TextEditingController();
+  String _searchText = '';
+  final news GetNews = news();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,10 +96,10 @@ class _UserHomeState extends State<UserHome> {
                           child: Padding(
                             padding: const EdgeInsets.only(right: 8.0, top: 40),
                             child: TextField(
-                              controller: _SearchController,
+                              controller: _searchController,
                               onChanged: (value) {
                                 setState(() {
-                                  _SearchText = value;
+                                  _searchText = value;
                                 });
                               },
                               decoration: InputDecoration(
@@ -117,7 +118,6 @@ class _UserHomeState extends State<UserHome> {
                             ),
                           ),
                         ),
-
                         //Icon Favorite
                         Positioned(
                           left: 205.9,
@@ -175,10 +175,9 @@ class _UserHomeState extends State<UserHome> {
             child: Padding(
               padding: const EdgeInsets.only(bottom: 20.0),
               child: FutureBuilder(
-                //Get Data From Services News
-                future: getNew.getNew(),
+                future: GetNews.getNews(),
                 builder: (BuildContext context,
-                    AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
+                    AsyncSnapshot<List<Map<String, dynamic>>?> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(
                       child: CircularProgressIndicator(),
@@ -186,21 +185,26 @@ class _UserHomeState extends State<UserHome> {
                   } else {
                     //Cari Berdasarkan tittle
                     List<Map<String, dynamic>> filteredNews = snapshot.data!
-                        .where((news) => news['tittle']
-                            .toLowerCase()
-                            .contains(_SearchText.toLowerCase()))
+                        .where((news) =>
+                            news['tittle']
+                                ?.toLowerCase()
+                                .contains(_searchText.toLowerCase()) ??
+                            false)
                         .toList();
                     return ListView.builder(
                       itemCount: filteredNews.length,
                       itemBuilder: (BuildContext context, int index) {
-                        Map<String, dynamic> news = filteredNews[index];
+                        Map<String, dynamic> newsGet = filteredNews[index];
+                        // Get Document ID to --> newsDetailScreen
+                        String newsId = newsGet['id'];
                         return GestureDetector(
                           onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => newsDetailScreen(
-                                  news: news,
+                                  newsData: newsGet,
+                                  newsId: newsId,
                                 ),
                               ),
                             );
@@ -218,7 +222,7 @@ class _UserHomeState extends State<UserHome> {
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
                                       image: NetworkImage(
-                                          news['urlimage'] ?? null),
+                                          newsGet['urlimage'] ?? ''),
                                       fit: BoxFit.cover,
                                     ),
                                     borderRadius: BorderRadius.vertical(
@@ -229,27 +233,30 @@ class _UserHomeState extends State<UserHome> {
                                 Container(
                                   padding: EdgeInsets.all(6.0),
                                   decoration: BoxDecoration(
-                                      color: Color.fromRGBO(231, 229, 93, 1),
-                                      boxShadow: [
-                                        BoxShadow(
-                                            color: Colors.grey,
-                                            blurRadius: 10,
-                                            spreadRadius: 1)
-                                      ],
-                                      borderRadius: BorderRadius.vertical(
-                                          bottom: Radius.circular(10))),
+                                    color: Color.fromRGBO(231, 229, 93, 1),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey,
+                                        blurRadius: 10,
+                                        spreadRadius: 1,
+                                      )
+                                    ],
+                                    borderRadius: BorderRadius.vertical(
+                                      bottom: Radius.circular(10),
+                                    ),
+                                  ),
                                   child: Row(
                                     children: [
                                       Expanded(
                                         child: Text(
-                                          news['tittle'] ?? '',
+                                          newsGet['tittle'] ?? '',
                                           style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 15.0,
                                           ),
                                           overflow: TextOverflow.fade,
                                         ),
-                                      )
+                                      ),
                                     ],
                                   ),
                                 ),

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class getServicesList {
-  Future<List<Map<String, dynamic>>> getNew() async {
+  Future<List<Map<String, dynamic>>> getServices() async {
     try {
       QuerySnapshot<Map<String, dynamic>> querySnapshot =
           await FirebaseFirestore.instance.collection('services_list').get();

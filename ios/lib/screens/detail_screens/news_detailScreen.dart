@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 class newsDetailScreen extends StatelessWidget {
   final Map<String, dynamic> news;
@@ -99,6 +100,30 @@ class newsDetailScreen extends StatelessWidget {
             ],
           ),
         ),
+      ),
+      floatingActionButton: SpeedDial(
+        child: Icon(
+          Icons.menu_sharp,
+        ),
+        activeIcon: Icons.close,
+        buttonSize: Size(10, 40),
+        backgroundColor: Color.fromRGBO(231, 229, 93, 1),
+        curve: Curves.bounceIn,
+        children: [
+          SpeedDialChild(
+              elevation: 0,
+              child: Icon(Icons.favorite),
+              labelWidget: Text("Favorites"),
+              shape: CircleBorder(),
+              onTap: () {}),
+          SpeedDialChild(
+            elevation: 0,
+            child: Icon(Icons.comment),
+            labelWidget: Text("Comments"),
+            shape: CircleBorder(),
+            onTap: () {},
+          ),
+        ],
       ),
     );
   }

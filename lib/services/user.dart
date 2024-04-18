@@ -15,6 +15,7 @@ class userLogin {
       // Melakukan login user
       UserCredential userCredentialLogin = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
+      print("UID pengguna: ${userCredentialLogin.user!.uid}");
 
       // Mengambil data user dari database
       DataSnapshot dataRole = (await _databaseReference
@@ -43,8 +44,6 @@ class userLogin {
       } else {
         return null;
       }
-
-      // Catch Error Belum Terbaca
     } catch (e) {
       if (e is FirebaseAuthException) {
         print(e.code);
@@ -71,6 +70,7 @@ class userRegister {
   Future<bool> newUserRegis(String email, String password, String username,
       String number, BuildContext context) async {
     try {
+      //Buat Authentication User
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
       // Simpan data pengguna ke Firebase Realtime Database
@@ -80,7 +80,7 @@ class userRegister {
         'number': number,
         'role': 'User',
       });
-      return true;
+      return false;
     } catch (e) {
       if (e is FirebaseAuthException) {
         if (e.code == 'email-already-in-use') {
@@ -93,6 +93,16 @@ class userRegister {
         }
       }
     }
-    return false;
+    return true;
+  }
+}
+
+//Auth Get CurrentUserID
+Future<String?> getCurrentUserId() async {
+  User? user = FirebaseAuth.instance.currentUser;
+  if (user != null) {
+    return user.uid;
+  } else {
+    return null;
   }
 }

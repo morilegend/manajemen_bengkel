@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kp_manajemen_bengkel/screens/mainscreen/login.dart';
 import 'package:kp_manajemen_bengkel/services/user.dart';
@@ -46,12 +47,13 @@ class _RegisterState extends State<Register> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 //Username
-                const SizedBox(height: 40),
+                const SizedBox(height: 20),
                 TextFormField(
                   controller: usernameController,
                   decoration: const InputDecoration(
                     labelText: 'Username',
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -65,12 +67,13 @@ class _RegisterState extends State<Register> {
                 ),
 
                 //Email
-                const SizedBox(height: 20),
+                const SizedBox(height: 15),
                 TextFormField(
                   controller: emailController,
                   decoration: const InputDecoration(
                     labelText: 'Email',
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -86,12 +89,13 @@ class _RegisterState extends State<Register> {
                 ),
 
                 //Number
-                const SizedBox(height: 20),
+                const SizedBox(height: 15),
                 TextFormField(
                   controller: numberController,
                   decoration: const InputDecoration(
                     labelText: 'Number',
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -107,13 +111,14 @@ class _RegisterState extends State<Register> {
                 ),
 
                 //Password
-                const SizedBox(height: 20),
+                const SizedBox(height: 15),
                 TextFormField(
                   obscureText: _showPassword1,
                   controller: passwordController,
                   decoration: InputDecoration(
                     labelText: 'Password',
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
                     focusedBorder: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.indigo),
                     ),
@@ -146,12 +151,13 @@ class _RegisterState extends State<Register> {
                 ),
 
                 //Confirm Password
-                const SizedBox(height: 20),
+                const SizedBox(height: 15),
                 TextFormField(
                   obscureText: _showPassword2,
                   decoration: InputDecoration(
                     labelText: 'Konfirmasi Password',
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
                     focusedBorder: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.indigo),
                     ),
@@ -182,27 +188,30 @@ class _RegisterState extends State<Register> {
                 ),
 
                 //Button
-                const SizedBox(height: 20),
+                const SizedBox(height: 15),
                 ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      _formKey.currentState!.save();
-                    }
-                    //Path To auth.dart --> Save To Firebase
-                    bool success = await newUser.newUserRegis(saveemail,
-                        savepassword, saveusername, savenumber, context);
-                    if (success) {
-                      // Tampilkan popup notifikasi
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Pendaftaran berhasil. Silakan login.'),
-                          duration: Duration(seconds: 4),
-                        ),
-                      );
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Login()),
-                      );
+                      //Path To auth.dart --> Save To Firebase
+                      bool success = await newUser.newUserRegis(saveemail,
+                          savepassword, saveusername, savenumber, context);
+                      if (success == success) {
+                        // Tampilkan popup notifikasi
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content:
+                                Text('Pendaftaran berhasil. Silakan login.'),
+                            duration: Duration(seconds: 4),
+                          ),
+                        );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Login()),
+                        );
+                        _formKey.currentState!.save();
+                      } else {
+                        print("Tidak Berhasil Register");
+                      }
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -210,11 +219,12 @@ class _RegisterState extends State<Register> {
                       borderRadius: BorderRadius.circular(7),
                     ),
                     fixedSize: const Size(300, 20),
-                    backgroundColor: Colors.indigo,
+                    backgroundColor: Color.fromRGBO(231, 229, 93, 1),
                   ),
                   child: const Text(
                     'Register',
-                    style: TextStyle(fontSize: 16, color: Colors.white),
+                    style: TextStyle(
+                        fontSize: 16, color: Color.fromARGB(255, 0, 0, 0)),
                   ),
                 ),
               ],

@@ -12,8 +12,8 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   bool _showPassword = true;
   final _formKey = GlobalKey<FormState>();
-  late String saveemail = "";
-  late String savepassword = "";
+  late TextEditingController emailController = TextEditingController();
+  late TextEditingController passwordController = TextEditingController();
 
   //Initilizaze From userLogin --> UserLogin
   userLogin UserLogin = userLogin();
@@ -95,7 +95,7 @@ class _LoginState extends State<Login> {
                                   )),
                               // Logic Pengecekan
                               onSaved: (value) {
-                                saveemail = value!;
+                                emailController.text = value!;
                               },
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -133,7 +133,7 @@ class _LoginState extends State<Login> {
                               ),
                               // Logic Pengecekan
                               onSaved: (value) {
-                                savepassword = value!;
+                                passwordController.text = value!;
                               },
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -151,8 +151,8 @@ class _LoginState extends State<Login> {
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
                                 _formKey.currentState!.save();
-                                UserLogin.LoginUser(
-                                    saveemail, savepassword, context);
+                                UserLogin.LoginUser(emailController.text,
+                                    passwordController.text, context);
                               }
                             },
                             style: ElevatedButton.styleFrom(
@@ -160,12 +160,13 @@ class _LoginState extends State<Login> {
                                 borderRadius: BorderRadius.circular(7),
                               ),
                               minimumSize: Size(300, 40),
-                              backgroundColor: Colors.indigo,
+                              backgroundColor: Color.fromRGBO(231, 229, 93, 1),
                             ),
                             child: const Text(
                               'Login',
-                              style:
-                                  TextStyle(fontSize: 16, color: Colors.white),
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Color.fromARGB(255, 0, 0, 0)),
                             ),
                           ),
 
