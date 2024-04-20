@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -58,6 +60,30 @@ class userLogin {
   }
 }
 
+class UserData {
+  final DatabaseReference _databaseReference =
+      FirebaseDatabase.instance.reference().child("Users");
+
+  Future<String?> getUsername() async {
+    try {
+      String? userId = await getCurrentUserId();
+      if (userId != null) {
+        DataSnapshot dataSnapshot =
+            await _databaseReference.child(userId).child("username").get();
+        String? username = dataSnapshot.value.toString();
+        return username;
+      } else {
+        // Handle null userId
+        return null;
+      }
+    } catch (e) {
+      print(e);
+      // Handle errors
+      return null;
+    }
+  }
+}
+
 // User Register
 //email: admin@admin.com password: admin123
 //email: manager@manager.com password: manager123
@@ -103,6 +129,6 @@ Future<String?> getCurrentUserId() async {
   if (user != null) {
     return user.uid;
   } else {
-    return null;
+    return "Error Terhadap User dengan $user";
   }
 }

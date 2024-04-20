@@ -4,6 +4,7 @@ import 'package:kp_manajemen_bengkel/screens/user/bottomnav_user.dart';
 import 'package:kp_manajemen_bengkel/screens/user/favorite_news.dart';
 import 'package:kp_manajemen_bengkel/screens/detail_screens/news_detailScreenUser.dart';
 import 'package:kp_manajemen_bengkel/services/news.dart';
+import 'package:kp_manajemen_bengkel/services/user.dart';
 
 class UserHome extends StatefulWidget {
   const UserHome({Key? key}) : super(key: key);
@@ -16,6 +17,7 @@ class _UserHomeState extends State<UserHome> {
   TextEditingController _searchController = TextEditingController();
   String _searchText = '';
   final news GetNews = news();
+  final UserData getUser = UserData();
 
   @override
   Widget build(BuildContext context) {
@@ -50,14 +52,26 @@ class _UserHomeState extends State<UserHome> {
                         color: Color.fromARGB(255, 75, 73, 73),
                       ),
                     ),
-                    Text(
-                      '#USER',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    )
+                    //Penggunaan FuruteBuilder<String?>
+                    FutureBuilder<String?>(
+                      future: getUser.getUsername(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<String?> snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return CircularProgressIndicator();
+                        } else {
+                          return Text(
+                            '${snapshot.data}',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          );
+                        }
+                      },
+                    ),
                   ],
                 ),
               ),
