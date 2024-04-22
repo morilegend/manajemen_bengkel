@@ -193,9 +193,14 @@ class _RegisterState extends State<Register> {
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       //Path To auth.dart --> Save To Firebase
+
                       bool success = await newUser.newUserRegis(saveemail,
                           savepassword, saveusername, savenumber, context);
+
                       if (success == success) {
+                        _formKey.currentState!.save();
+                        newUser.newUserRegis(saveemail, savepassword,
+                            saveusername, savenumber, context);
                         // Tampilkan popup notifikasi
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(

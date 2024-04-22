@@ -53,24 +53,23 @@ class _UserHomeState extends State<UserHome> {
                       ),
                     ),
                     //Penggunaan FuruteBuilder<String?>
-                    FutureBuilder<String?>(
-                      future: getUser.getUsername(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<String?> snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return CircularProgressIndicator();
-                        } else {
+                    Container(
+                      width: 190,
+                      height: 31,
+                      child: FutureBuilder<String?>(
+                        future: getUser.getUsername(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<String?> snapshot) {
                           return Text(
                             '${snapshot.data}',
                             style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                                overflow: TextOverflow.ellipsis),
                           );
-                        }
-                      },
+                        },
+                      ),
                     ),
                   ],
                 ),
