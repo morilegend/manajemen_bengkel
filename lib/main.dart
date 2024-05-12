@@ -10,6 +10,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 //Import Screens
 import 'package:kp_manajemen_bengkel/screens/mainscreen/login.dart';
 
+//Import Services
+import 'package:kp_manajemen_bengkel/services/user.dart';
+
+//Jangan Lupa Add MultiDex --> build.gradle
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(

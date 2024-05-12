@@ -1,22 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:kp_manajemen_bengkel/services/news.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:kp_manajemen_bengkel/services/news.dart';
+import 'package:kp_manajemen_bengkel/services/user.dart';
 
-class newsDetailScreen extends StatelessWidget {
+class newsDetailScreen extends StatefulWidget {
   final Map<String, dynamic> newsData;
-  String? newsId;
+  final String? newsId;
 
   newsDetailScreen({Key? key, required this.newsData, required this.newsId})
       : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final news addFavorite = news();
+  _newsDetailScreenState createState() => _newsDetailScreenState();
+}
 
+class _newsDetailScreenState extends State<newsDetailScreen> {
+  bool isFavorite = false;
+  final news newsService = news();
+
+  @override
+  void initState() {
+    super.initState();
+    checkFavoriteStatus();
+  }
+
+  Future<void> checkFavoriteStatus() async {
+    final favoriteStatus = await newsService.isFavoriteNews(widget.newsId);
+    setState(() {
+      isFavorite = favoriteStatus;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50),
-        child: AppBar(),
+      appBar: AppBar(
+        title: Text('News Detail'),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -29,7 +48,7 @@ class newsDetailScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      newsData['tittle'] ?? '',
+                      widget.newsData['tittle'] ?? '',
                       style: TextStyle(
                         color: const Color.fromARGB(255, 0, 0, 0),
                         fontSize: 26.0,
@@ -46,7 +65,7 @@ class newsDetailScreen extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        newsData['date'] ?? '',
+                        widget.newsData['date'] ?? '',
                         style: TextStyle(
                           color: Color.fromRGBO(116, 117, 137, 1),
                           fontSize: 15.0,
@@ -65,7 +84,7 @@ class newsDetailScreen extends StatelessWidget {
                 width: double.infinity,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: NetworkImage(newsData['urlimage'] ?? ''),
+                    image: NetworkImage(widget.newsData['urlimage'] ?? ''),
                     fit: BoxFit.cover,
                   ),
                   borderRadius: BorderRadius.circular(12.0),
@@ -90,7 +109,7 @@ class newsDetailScreen extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        newsData['descr'] ?? '',
+                        widget.newsData['descr'] ?? '',
                         style: TextStyle(
                           color: const Color.fromARGB(255, 0, 0, 0),
                           fontSize: 15.0,
@@ -106,23 +125,35 @@ class newsDetailScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: SpeedDial(
-        child: Icon(
-          Icons.menu_sharp,
-        ),
+        child: Icon(Icons.menu_sharp),
         activeIcon: Icons.close,
         buttonSize: Size(10, 40),
         backgroundColor: Color.fromRGBO(231, 229, 93, 1),
         curve: Curves.bounceIn,
         children: [
           SpeedDialChild(
-              backgroundColor: Color.fromRGBO(231, 229, 93, 1),
-              elevation: 0,
-              child: Icon(Icons.favorite),
-              labelWidget: Text("Favorites"),
-              shape: CircleBorder(),
-              onTap: () {
-                addFavorite.addFavoriteNews(newsId);
-              }),
+            backgroundColor: Color.fromRGBO(231, 229, 93, 1),
+            elevation: 0,
+            child: Icon(
+              Icons.favorite,
+              color: isFavorite ? Colors.red : Colors.black,
+            ),
+            labelWidget: Text("Favorites"),
+            shape: CircleBorder(),
+            onTap: () async {
+              final uid = await getCurrentUserId();
+              if (uid != null) {
+                if (isFavorite) {
+                  await newsService.removeFavoriteNews(widget.newsId);
+                } else {
+                  await newsService.addFavoriteNews(widget.newsId);
+                }
+                setState(() {
+                  isFavorite = !isFavorite;
+                });
+              }
+            },
+          ),
           SpeedDialChild(
             backgroundColor: Color.fromRGBO(231, 229, 93, 1),
             elevation: 0,
@@ -130,7 +161,7 @@ class newsDetailScreen extends StatelessWidget {
             labelWidget: Text("Comments"),
             shape: CircleBorder(),
             onTap: () {
-              print('Document ID: $newsId');
+              print('Document ID: ${widget.newsId}');
             },
           ),
         ],

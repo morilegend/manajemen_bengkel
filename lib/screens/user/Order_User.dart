@@ -13,6 +13,7 @@ class _OrderUsersState extends State<OrderUsers> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(231, 229, 93, 1),
+        automaticallyImplyLeading: false, //Menghilangkan Tombol Back
         elevation: 3,
         shadowColor: Colors.black,
         shape: RoundedRectangleBorder(

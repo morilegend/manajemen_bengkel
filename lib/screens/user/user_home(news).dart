@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
 import 'package:kp_manajemen_bengkel/screens/user/bottomnav_user.dart';
 import 'package:kp_manajemen_bengkel/screens/user/favorite_news.dart';
 import 'package:kp_manajemen_bengkel/screens/detail_screens/news_detailScreenUser.dart';
@@ -7,7 +6,7 @@ import 'package:kp_manajemen_bengkel/services/news.dart';
 import 'package:kp_manajemen_bengkel/services/user.dart';
 
 class UserHome extends StatefulWidget {
-  const UserHome({Key? key}) : super(key: key);
+  UserHome({Key? key}) : super(key: key);
 
   @override
   State<UserHome> createState() => _UserHomeState();
@@ -17,13 +16,14 @@ class _UserHomeState extends State<UserHome> {
   TextEditingController _searchController = TextEditingController();
   String _searchText = '';
   final news GetNews = news();
-  final UserData getUser = UserData();
+  final UserData getUserData = UserData();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(231, 229, 93, 1),
+        automaticallyImplyLeading: false, //Menghilangkan Tombol Back
         elevation: 3,
         shadowColor: Colors.black,
         shape: RoundedRectangleBorder(
@@ -56,17 +56,18 @@ class _UserHomeState extends State<UserHome> {
                     Container(
                       width: 190,
                       height: 31,
-                      child: FutureBuilder<String?>(
-                        future: getUser.getUsername(),
+                      child: FutureBuilder<Map<dynamic, dynamic>?>(
+                        future: getUserData.getUser(),
                         builder: (BuildContext context,
-                            AsyncSnapshot<String?> snapshot) {
+                            AsyncSnapshot<Map<dynamic, dynamic>?> snapshot) {
                           return Text(
-                            '${snapshot.data}',
+                            snapshot.data?["username"] ?? "",
                             style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                                overflow: TextOverflow.ellipsis),
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           );
                         },
                       ),
@@ -194,6 +195,10 @@ class _UserHomeState extends State<UserHome> {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(
                       child: CircularProgressIndicator(),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text('Error: ${snapshot.error}'),
                     );
                   } else {
                     //Cari Berdasarkan tittle

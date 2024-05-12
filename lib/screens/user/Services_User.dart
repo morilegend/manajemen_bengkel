@@ -8,7 +8,7 @@ class ServicesUser extends StatefulWidget {
   State<ServicesUser> createState() => _ServicesUserState();
 }
 
-final getServicesList getServices = getServicesList();
+final ServicesList getServices = ServicesList();
 
 class _ServicesUserState extends State<ServicesUser> {
   @override
@@ -16,6 +16,7 @@ class _ServicesUserState extends State<ServicesUser> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(231, 229, 93, 1),
+        automaticallyImplyLeading: false, //Menghilangkan Tombol Back
         elevation: 3,
         shadowColor: Colors.black,
         shape: RoundedRectangleBorder(

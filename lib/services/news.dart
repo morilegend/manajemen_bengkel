@@ -41,7 +41,7 @@ class news {
               await favoritesDocRef.get();
           // Jika dokumen "favorites" tidak ada, membuatnya dan menambahkan UID
           if (!favoritesDoc.exists) {
-            await favoritesDocRef.set({'userId': uid});
+            await favoritesDocRef.set({'userId': uid, 'isFavorite': true});
             print("Sukses menambahkan Favorites dengan userId $uid");
           } else {
             print(
@@ -87,6 +87,47 @@ class news {
     } catch (error) {
       print("Error: $error");
       return null;
+    }
+  }
+
+  Future<void> removeFavoriteNews(String? newsId) async {
+    try {
+      final uid = await getCurrentUserId();
+      if (uid != null) {
+        final favoritesDocRef = FirebaseFirestore.instance
+            .collection('news')
+            .doc(newsId)
+            .collection('favorites')
+            .doc(uid);
+
+        await favoritesDocRef.delete();
+        print('Berita dihapus dari daftar favorit.');
+      } else {
+        throw Exception("User not signed in.");
+      }
+    } catch (error) {
+      print("Error: $error");
+    }
+  }
+
+  Future<bool> isFavoriteNews(String? newsId) async {
+    try {
+      final uid = await getCurrentUserId();
+      if (uid != null) {
+        final favoritesDocRef = FirebaseFirestore.instance
+            .collection('news')
+            .doc(newsId)
+            .collection('favorites')
+            .doc(uid);
+
+        final favoritesDoc = await favoritesDocRef.get();
+        return favoritesDoc.exists;
+      } else {
+        throw Exception("User not signed in.");
+      }
+    } catch (error) {
+      print("Error: $error");
+      return false;
     }
   }
 }

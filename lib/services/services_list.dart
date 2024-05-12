@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class getServicesList {
+class ServicesList {
   Future<List<Map<String, dynamic>>> getServices() async {
     try {
       QuerySnapshot<Map<String, dynamic>> querySnapshot =
@@ -23,5 +23,3 @@ class getServicesList {
     }
   }
 }
-
-class postServicesList {}

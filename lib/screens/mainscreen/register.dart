@@ -51,13 +51,13 @@ class _RegisterState extends State<Register> {
                 TextFormField(
                   controller: usernameController,
                   decoration: const InputDecoration(
-                    labelText: 'Username',
+                    labelText: 'Nama',
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10))),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Username tidak boleh kosong';
+                      return 'Nama tidak boleh kosong';
                     }
                     return null;
                   },
@@ -193,7 +193,6 @@ class _RegisterState extends State<Register> {
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       //Path To auth.dart --> Save To Firebase
-
                       bool success = await newUser.newUserRegis(saveemail,
                           savepassword, saveusername, savenumber, context);
 

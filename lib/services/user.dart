@@ -63,22 +63,101 @@ class UserData {
   final DatabaseReference _databaseReference =
       FirebaseDatabase.instance.reference().child("Users");
 
-  Future<String?> getUsername() async {
+  Future<Map<dynamic, dynamic>?> getUser() async {
     try {
       String? userId = await getCurrentUserId();
       if (userId != null) {
         DataSnapshot dataSnapshot =
-            await _databaseReference.child(userId).child("username").get();
-        String? username = dataSnapshot.value.toString();
-        return username;
+            await _databaseReference.child(userId).get();
+        // print(dataSnapshot.value);
+        // print(userId);
+        // print(dataSnapshot.runtimeType); //Check Type Data
+        return dataSnapshot.value as Map<dynamic, dynamic>?;
       } else {
-        // Handle null userId
         return null;
       }
     } catch (e) {
       print(e);
-      // Handle errors
       return null;
+    }
+  }
+
+//Change Username
+  Future<void> changeUsername(String newUsername) async {
+    try {
+      String? userId = await getCurrentUserId();
+      if (userId != null) {
+        await _databaseReference
+            .child(userId)
+            .update({'username': newUsername});
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+//Change Email
+  Future<void> changeEmail(String newEmail) async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        await user.updateEmail(newEmail);
+        await _databaseReference.child(user.uid).update({'email': newEmail});
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+//Change Password
+  Future<void> changePassword(String newPassword) async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        await user.updatePassword(newPassword);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<bool> checkPassword(String password) async {
+    try {
+      // Mendapatkan pengguna saat ini dari Firebase Authentication
+      User? user = FirebaseAuth.instance.currentUser;
+
+      // Memeriksa apakah pengguna ada dan apakah password cocok
+      if (user != null) {
+        // Memeriksa kredensial dengan metode reauthenicateWithCredential
+        AuthCredential credential = EmailAuthProvider.credential(
+          email: user.email!,
+          password: password,
+        );
+        await user.reauthenticateWithCredential(credential);
+        // Jika berhasil, password cocok
+        return true;
+      } else {
+        // Jika tidak ada pengguna, password tidak cocok
+        return false;
+      }
+    } catch (e) {
+      // Jika ada kesalahan, misalnya password tidak cocok
+      print(e);
+      return false;
+    }
+  }
+
+//Change Phone Number
+  Future<void> changePhoneNumber(String newPhoneNumber) async {
+    try {
+      String? userId = await getCurrentUserId();
+      if (userId != null) {
+        await _databaseReference
+            .child(userId)
+            .update({'number': newPhoneNumber});
+      }
+    } catch (e) {
+      print(e);
     }
   }
 }
@@ -122,7 +201,7 @@ class userRegister {
   }
 }
 
-//Auth Get CurrentUserID
+//Get CurrentUserID
 Future<String?> getCurrentUserId() async {
   User? user = FirebaseAuth.instance.currentUser;
   if (user != null) {
