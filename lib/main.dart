@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:kp_manajemen_bengkel/screens/admin/bottomnav_admin.dart';
 import 'package:kp_manajemen_bengkel/screens/detail_screens/news_detailScreenUser.dart';
 import 'package:kp_manajemen_bengkel/screens/user/bottomnav_user.dart';
 import 'package:kp_manajemen_bengkel/screens/user/user_home(news).dart';
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
       //   brightness: Brightness.dark,
       // ),
       debugShowCheckedModeBanner: false,
-      home: Login(),
+      home: NavbarAdmin(),
     );
   }
 }

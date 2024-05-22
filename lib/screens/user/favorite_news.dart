@@ -12,23 +12,51 @@ class _FavoriteNewsUserState extends State<FavoriteNewsUser> {
   List<Map<String, dynamic>>? filteredFavoriteNews;
   TextEditingController _searchController = TextEditingController();
   String _searchText = '';
-  final news GetNews = news();
   bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
     fetchFavoriteNews();
+    _searchController.addListener(_searchNews);
+  }
+
+  @override
+  void dispose() {
+    _searchController.removeListener(_searchNews);
+    _searchController.dispose();
+    super.dispose();
   }
 
   Future<void> fetchFavoriteNews() async {
     setState(() {
       isLoading = true;
     });
-    favoriteNews = await news().getNewsFavorite();
-    setState(() {
-      isLoading = false;
+
+    try {
+      favoriteNews = await favoriteService().getNewsFavorite();
       filteredFavoriteNews = favoriteNews;
+    } catch (error) {
+      print('Error fetching favorite news: $error');
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  void _searchNews() {
+    setState(() {
+      _searchText = _searchController.text;
+      if (_searchText.isEmpty) {
+        filteredFavoriteNews = favoriteNews;
+      } else {
+        filteredFavoriteNews = favoriteNews?.where((news) {
+          return news['tittle']
+              .toLowerCase()
+              .contains(_searchText.toLowerCase());
+        }).toList();
+      }
     });
   }
 
@@ -63,10 +91,7 @@ class _FavoriteNewsUserState extends State<FavoriteNewsUser> {
                     child: Stack(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(
-                            right: 20,
-                            bottom: 10,
-                          ),
+                          padding: const EdgeInsets.only(right: 20, bottom: 10),
                           child: Text(
                             'Favorite News',
                             style: TextStyle(
@@ -81,21 +106,6 @@ class _FavoriteNewsUserState extends State<FavoriteNewsUser> {
                             padding: const EdgeInsets.only(right: 8.0, top: 45),
                             child: TextField(
                               controller: _searchController,
-                              onChanged: (value) {
-                                setState(() {
-                                  _searchText = value;
-                                  if (_searchText.isEmpty) {
-                                    filteredFavoriteNews = favoriteNews;
-                                  } else {
-                                    filteredFavoriteNews = favoriteNews
-                                        ?.where((news) => news['tittle']
-                                            .toLowerCase()
-                                            .contains(
-                                                _searchText.toLowerCase()))
-                                        .toList();
-                                  }
-                                });
-                              },
                               decoration: InputDecoration(
                                 hintText: 'Search',
                                 prefixIcon: Icon(Icons.search),
@@ -201,9 +211,7 @@ class _FavoriteNewsUserState extends State<FavoriteNewsUser> {
                             );
                           },
                         )
-                      : Center(
-                          child: Text('Tidak Ada Berita .'),
-                        ),
+                      : Center(child: Text('Favorite Kosong')),
             ),
           ),
         ],

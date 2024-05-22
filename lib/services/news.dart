@@ -17,7 +17,10 @@ class news {
     }
     return newsList;
   }
+}
 
+class favoriteService {
+  final seeNews = news();
   Future<void> addFavoriteNews(String? newsId) async {
     try {
       FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -59,7 +62,7 @@ class news {
   Future<List<Map<String, dynamic>>?> getNewsFavorite() async {
     try {
       // Get semua berita, dan cek apakah terdapat favorites
-      List<Map<String, dynamic>>? allNews = await getNews();
+      List<Map<String, dynamic>>? allNews = await seeNews.getNews();
       if (allNews != null) {
         String? uid = await getCurrentUserId();
         if (uid != null) {

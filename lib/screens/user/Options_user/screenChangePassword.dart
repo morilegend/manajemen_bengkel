@@ -17,6 +17,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   bool showPassword1 = true;
   bool showPassword2 = true;
   bool showPassword3 = true;
+  final GlobalKey<FormState> _formKey =
+      GlobalKey<FormState>(); // Added _formKey
 
   @override
   void initState() {
@@ -43,167 +45,157 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       ),
       child: Scaffold(
         appBar: AppBar(),
-        body: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextFormField(
-                controller: _oldPasswordController,
-                obscureText: showPassword1,
-                decoration: InputDecoration(
-                  labelText: 'Old Password',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        showPassword1 = !showPassword1;
-                      });
-                    },
-                    icon: Icon(
-                      showPassword1 ? Icons.visibility : Icons.visibility_off,
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.only(
+              top: 120.0, bottom: 20, left: 20, right: 20),
+          child: Form(
+            key: _formKey, // Form key To Widget
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextFormField(
+                  controller: _oldPasswordController,
+                  obscureText: showPassword1,
+                  decoration: InputDecoration(
+                    labelText: 'Password Lama',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 20),
-              TextFormField(
-                controller: _newPasswordController,
-                obscureText: showPassword2,
-                decoration: InputDecoration(
-                  labelText: 'New Password',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        showPassword2 = !showPassword2;
-                      });
-                    },
-                    icon: Icon(
-                      showPassword2 ? Icons.visibility : Icons.visibility_off,
-                    ),
-                  ),
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter your new password';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
-              TextFormField(
-                controller: _confirmNewPasswordController,
-                obscureText: showPassword3,
-                decoration: InputDecoration(
-                  labelText: 'Confirm New Password ',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        showPassword3 = !showPassword3;
-                      });
-                    },
-                    icon: Icon(
-                      showPassword3 ? Icons.visibility : Icons.visibility_off,
-                    ),
-                  ),
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please confirm your new password';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(7),
-                  ),
-                  backgroundColor: Color.fromRGBO(231, 229, 93, 1),
-                ),
-                onPressed: () async {
-                  String oldPassword = _oldPasswordController.text;
-                  String newPassword = _newPasswordController.text;
-                  String confirmNewPassword =
-                      _confirmNewPasswordController.text;
-
-                  if (newPassword.isEmpty || confirmNewPassword.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content:
-                            Text('Please enter and confirm your new password'),
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          showPassword1 = !showPassword1;
+                        });
+                      },
+                      icon: Icon(
+                        showPassword1 ? Icons.visibility : Icons.visibility_off,
                       ),
-                    );
-                    return;
-                  }
-
-                  bool passwordMatch =
-                      await UserData().checkPassword(oldPassword);
-                  if (passwordMatch) {
-                    if (newPassword == confirmNewPassword) {
-                      await UserData().changePassword(newPassword);
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            backgroundColor: Color.fromRGBO(231, 229, 93, 1),
-                            content: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  'Password Anda telah berhasil diubah!',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                SizedBox(height: 20),
-                                IconButton(
-                                  icon: Icon(Icons.close),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => NavbarUser(),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      );
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content:
-                              Text('Konfirmasi password baru tidak sesuai'),
-                        ),
-                      );
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Masukkan Password';
                     }
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Password lama tidak sesuai'),
-                      ),
-                    );
-                  }
-                },
-                child: Text(
-                  'Submit',
-                  style: TextStyle(color: Colors.black),
+                    return null;
+                  },
                 ),
-              ),
-            ],
+                SizedBox(height: 10),
+                TextFormField(
+                  controller: _newPasswordController,
+                  obscureText: showPassword2,
+                  decoration: InputDecoration(
+                    labelText: 'Password Baru',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          showPassword2 = !showPassword2;
+                        });
+                      },
+                      icon: Icon(
+                        showPassword2 ? Icons.visibility : Icons.visibility_off,
+                      ),
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Masukkan Password Baru';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 10),
+                TextFormField(
+                  controller: _confirmNewPasswordController,
+                  obscureText: showPassword3,
+                  decoration: InputDecoration(
+                    labelText: 'Konfirm Password Baru',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          showPassword3 = !showPassword3;
+                        });
+                      },
+                      icon: Icon(
+                        showPassword3 ? Icons.visibility : Icons.visibility_off,
+                      ),
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Konfirmasi Password Baru';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(7),
+                    ),
+                    backgroundColor: Color.fromRGBO(231, 229, 93, 1),
+                  ),
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      String oldPassword = _oldPasswordController.text;
+                      String newPassword = _newPasswordController.text;
+                      String confirmNewPassword =
+                          _confirmNewPasswordController.text;
+
+                      bool passwordMatch =
+                          await password().checkPassword(oldPassword);
+                      if (passwordMatch) {
+                        if (newPassword == confirmNewPassword) {
+                          await password().changePassword(newPassword);
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor:
+                                    Color.fromRGBO(231, 229, 93, 1),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      'Password Anda telah berhasil diubah!',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    SizedBox(height: 20),
+                                    IconButton(
+                                      icon: Icon(Icons.close),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) => NavbarUser(),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        }
+                      }
+                    }
+                  },
+                  child: Text(
+                    'Submit',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
