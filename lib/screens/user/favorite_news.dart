@@ -34,7 +34,7 @@ class _FavoriteNewsUserState extends State<FavoriteNewsUser> {
     });
 
     try {
-      favoriteNews = await favoriteService().getNewsFavorite();
+      favoriteNews = await FavoriteService().getNewsFavorite();
       filteredFavoriteNews = favoriteNews;
     } catch (error) {
       print('Error fetching favorite news: $error');

@@ -10,12 +10,12 @@ class newsDetailScreen extends StatefulWidget {
       : super(key: key);
 
   @override
-  nNewsDetailScreenState createState() => nNewsDetailScreenState();
+  NewsDetailScreenState createState() => NewsDetailScreenState();
 }
 
-class nNewsDetailScreenState extends State<newsDetailScreen> {
+class NewsDetailScreenState extends State<newsDetailScreen> {
   bool isFavorite = false;
-  final favoriteService newsService = favoriteService();
+  final FavoriteService newsService = FavoriteService();
 
   @override
   void initState() {

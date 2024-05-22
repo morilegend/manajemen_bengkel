@@ -15,7 +15,7 @@ class UserHome extends StatefulWidget {
 class _UserHomeState extends State<UserHome> {
   TextEditingController _searchController = TextEditingController();
   String _searchText = '';
-  final news GetNews = news();
+  final NewsService GetNews = NewsService();
   final UserData getUserData = UserData();
 
   @override

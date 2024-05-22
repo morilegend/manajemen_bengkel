@@ -1,8 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:kp_manajemen_bengkel/screens/admin/settings_admin.dart';
-import 'package:kp_manajemen_bengkel/screens/admin/laporan_admin.dart';
+import 'package:kp_manajemen_bengkel/screens/admin/account_admin.dart';
+import 'package:kp_manajemen_bengkel/screens/admin/menu/jasa_admin.dart';
+import 'package:kp_manajemen_bengkel/screens/admin/menu/laporan_admin.dart';
+import 'package:kp_manajemen_bengkel/screens/admin/menu/pegawai_admin.dart';
+import 'package:kp_manajemen_bengkel/screens/admin/order_admin.dart';
+import 'package:kp_manajemen_bengkel/screens/admin/tambah_news.dart';
 import 'package:kp_manajemen_bengkel/screens/admin/transaksi_admin.dart';
 
 class AdminHome extends StatefulWidget {
@@ -119,16 +122,17 @@ class _AdminHomeState extends State<AdminHome> {
                           icon: Icon(Icons.attach_money),
                           iconSize: 35,
                           onPressed: () {
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //       builder: (context) => ),
-                            // );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => JasaAdmin()),
+                            );
                           },
                         ),
                       ),
                       Text(
-                        'Transaksi',
+                        'Jasa',
+                        style: TextStyle(fontSize: 15),
                       ),
                     ],
                   ),
@@ -143,15 +147,15 @@ class _AdminHomeState extends State<AdminHome> {
                           icon: Icon(Icons.insert_chart),
                           iconSize: 35,
                           onPressed: () {
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //       builder: (context) => ),
-                            // );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PegawaiAdmin()),
+                            );
                           },
                         ),
                       ),
-                      Text('Laporan'),
+                      Text('Pegawai'),
                     ],
                   ),
                   Column(
@@ -165,15 +169,15 @@ class _AdminHomeState extends State<AdminHome> {
                           icon: Icon(Icons.settings),
                           iconSize: 35,
                           onPressed: () {
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //       builder: (context) => ),
-                            // );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LaporanAdmin()),
+                            );
                           },
                         ),
                       ),
-                      Text('Settings'),
+                      Text('Laporan'),
                     ],
                   ),
                 ],
@@ -181,6 +185,31 @@ class _AdminHomeState extends State<AdminHome> {
             ),
             Divider(
               thickness: 1,
+            ),
+            //Tambah News
+            SingleChildScrollView(
+              child: Container(
+                height: 120,
+                width: 280,
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 199, 196, 196),
+                  border: Border.all(width: 1),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.add,
+                  ),
+                  iconSize: 90,
+                  color: Colors.black,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => TambahNews()),
+                    );
+                  },
+                ),
+              ),
             )
           ],
         ),

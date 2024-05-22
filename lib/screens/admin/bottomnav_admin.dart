@@ -1,15 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kp_manajemen_bengkel/screens/admin/admin_home.dart';
-import 'package:kp_manajemen_bengkel/screens/admin/laporan_admin.dart';
-import 'package:kp_manajemen_bengkel/screens/admin/settings_admin.dart';
+import 'package:kp_manajemen_bengkel/screens/admin/order_admin.dart';
 import 'package:kp_manajemen_bengkel/screens/admin/transaksi_admin.dart';
-import 'package:kp_manajemen_bengkel/screens/user/Services_User.dart';
-import 'package:kp_manajemen_bengkel/screens/user/Order_User.dart';
-import 'package:kp_manajemen_bengkel/screens/user/Options_user/Settings_user_Main.dart';
-import 'package:kp_manajemen_bengkel/screens/user/favorite_news.dart';
-import 'package:kp_manajemen_bengkel/screens/user/user_home(news).dart';
-import 'package:lottie/lottie.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 class NavbarAdmin extends StatefulWidget {
@@ -21,9 +14,8 @@ class NavbarAdminState extends State<NavbarAdmin> {
   int _selectedIndex = 0;
   static List<Widget> _widgetOptions = <Widget>[
     AdminHome(),
-    LaporanHomeAdmin(),
+    OrderAdmin(),
     TransaksiHomeAdmin(),
-    SettingsAdmin(),
   ];
 
   @override
@@ -58,16 +50,12 @@ class NavbarAdminState extends State<NavbarAdmin> {
                 text: 'Home',
               ),
               GButton(
-                icon: Icons.report,
-                text: 'Laporan',
+                icon: Icons.note_alt_sharp,
+                text: 'Order',
               ),
               GButton(
-                icon: Icons.monetization_on,
-                text: 'Transaksi',
-              ),
-              GButton(
-                icon: Icons.settings,
-                text: 'Settings',
+                icon: Icons.person,
+                text: 'Account',
               ),
             ],
             selectedIndex: _selectedIndex,

@@ -1,13 +1,13 @@
 class newsM {
   final String date;
   final String descr;
-  final String title;
+  final String tittle;
   final String urlImage;
 
   newsM({
     required this.date,
     required this.descr,
-    required this.title,
+    required this.tittle,
     required this.urlImage,
   });
 
@@ -15,8 +15,8 @@ class newsM {
     return newsM(
       date: data['date'] ?? '',
       descr: data['descr'] ?? '',
-      title: data['title'] ?? '',
-      urlImage: data['urlImage'] ?? '',
+      tittle: data['tittle'] ?? '',
+      urlImage: data['urlimage'] ?? '',
     );
   }
 
@@ -24,8 +24,8 @@ class newsM {
     return {
       'date': date,
       'descr': descr,
-      'title': title,
-      'urlImage': urlImage,
+      'tittle': tittle,
+      'urlimage': urlImage,
     };
   }
 }
