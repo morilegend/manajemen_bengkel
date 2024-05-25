@@ -27,168 +27,169 @@ class _AdminHomeState extends State<AdminHome> {
         automaticallyImplyLeading: false,
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
-        child: Column(
-          children: [
-            Container(
-              height: 100,
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              decoration: BoxDecoration(
-                  color: Color.fromRGBO(231, 229, 93, 1),
-                  borderRadius: BorderRadius.circular(6),
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 1,
-                      spreadRadius: 0.1,
-                    )
-                  ]),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text(
-                          'Pendapatan Hari ini',
-                          style: TextStyle(
-                              fontSize: 13,
-                              color: Color.fromARGB(201, 0, 0, 0)),
-                        ),
-                        Text(
-                          'Rp0', // <-- Berikan Sebuah Logic Untuk Mengganti Text Hari ini
-                          style: TextStyle(
-                            fontSize: 16,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
+          child: Column(
+            children: [
+              Container(
+                height: 100,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                decoration: BoxDecoration(
+                    color: Color.fromRGBO(231, 229, 93, 1),
+                    borderRadius: BorderRadius.circular(6),
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 1,
+                        spreadRadius: 0.1,
+                      )
+                    ]),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            'Pendapatan Hari ini',
+                            style: TextStyle(
+                                fontSize: 13,
+                                color: Color.fromARGB(201, 0, 0, 0)),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text(
-                          'Pendapatan Bulan ini',
-                          style: TextStyle(
-                              fontSize: 13,
-                              color: Color.fromARGB(201, 0, 0, 0)),
-                        ),
-                        Text(
-                          'Rp0', // <-- Berikan Sebuah Logic Untuk Mengganti Text Bulan ini
-                          style: TextStyle(
-                            fontSize: 16,
+                          Text(
+                            'Rp0', // <-- Berikan Sebuah Logic Untuk Mengganti Text Hari ini
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            // Menu Label
-            Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Menu',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            'Pendapatan Bulan ini',
+                            style: TextStyle(
+                                fontSize: 13,
+                                color: Color.fromARGB(201, 0, 0, 0)),
+                          ),
+                          Text(
+                            'Rp0', // <-- Berikan Sebuah Logic Untuk Mengganti Text Bulan ini
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            // Icons with Text
-            Padding(
-              padding: const EdgeInsets.only(top: 15, bottom: 5),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+              ),
+              // Menu Label
+              Row(
                 children: [
-                  Column(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Color.fromRGBO(231, 229, 93, 1),
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(30)),
-                        child: IconButton(
-                          icon: Icon(Icons.attach_money),
-                          iconSize: 35,
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => JasaAdmin()),
-                            );
-                          },
+                  Padding(
+                    padding: EdgeInsets.only(top: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Menu',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
                         ),
-                      ),
-                      Text(
-                        'Jasa',
-                        style: TextStyle(fontSize: 15),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Color.fromRGBO(231, 229, 93, 1),
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(30)),
-                        child: IconButton(
-                          icon: Icon(Icons.insert_chart),
-                          iconSize: 35,
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => PegawaiAdmin()),
-                            );
-                          },
-                        ),
-                      ),
-                      Text('Pegawai'),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Color.fromRGBO(231, 229, 93, 1),
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(30)),
-                        child: IconButton(
-                          icon: Icon(Icons.settings),
-                          iconSize: 35,
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => LaporanAdmin()),
-                            );
-                          },
-                        ),
-                      ),
-                      Text('Laporan'),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),
-            ),
-            Divider(
-              thickness: 1,
-            ),
-            //Tambah News
-            SingleChildScrollView(
-              child: Container(
+              // Icons with Text
+              Padding(
+                padding: const EdgeInsets.only(top: 15, bottom: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                              color: Color.fromRGBO(231, 229, 93, 1),
+                              border: Border.all(),
+                              borderRadius: BorderRadius.circular(30)),
+                          child: IconButton(
+                            icon: Icon(Icons.attach_money),
+                            iconSize: 35,
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => JasaAdmin()),
+                              );
+                            },
+                          ),
+                        ),
+                        Text(
+                          'Jasa',
+                          style: TextStyle(fontSize: 15),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                              color: Color.fromRGBO(231, 229, 93, 1),
+                              border: Border.all(),
+                              borderRadius: BorderRadius.circular(30)),
+                          child: IconButton(
+                            icon: Icon(Icons.insert_chart),
+                            iconSize: 35,
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => PegawaiAdmin()),
+                              );
+                            },
+                          ),
+                        ),
+                        Text('Pegawai'),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                              color: Color.fromRGBO(231, 229, 93, 1),
+                              border: Border.all(),
+                              borderRadius: BorderRadius.circular(30)),
+                          child: IconButton(
+                            icon: Icon(Icons.settings),
+                            iconSize: 35,
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LaporanAdmin()),
+                              );
+                            },
+                          ),
+                        ),
+                        Text('Laporan'),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Divider(
+                thickness: 1,
+              ),
+              //Tambah News
+              Container(
                 height: 120,
                 width: 280,
                 decoration: BoxDecoration(
@@ -209,9 +210,9 @@ class _AdminHomeState extends State<AdminHome> {
                     );
                   },
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -1,19 +1,20 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart'; // Package for Provides internationalization and localization facilities
+import 'package:kp_manajemen_bengkel/models/newsModels.dart';
 import 'package:kp_manajemen_bengkel/services/news.dart';
 import 'package:kp_manajemen_bengkel/services/user.dart';
 
 class newsDetailScreen extends StatefulWidget {
-  final Map<String, dynamic> newsData;
-  final String? newsId;
+  final NewsM newsData;
 
-  newsDetailScreen({Key? key, required this.newsData, required this.newsId})
-      : super(key: key);
+  newsDetailScreen({Key? key, required this.newsData}) : super(key: key);
 
   @override
-  NewsDetailScreenState createState() => NewsDetailScreenState();
+  _newsDetailScreenState createState() => _newsDetailScreenState();
 }
 
-class NewsDetailScreenState extends State<newsDetailScreen> {
+class _newsDetailScreenState extends State<newsDetailScreen> {
   bool isFavorite = false;
   final FavoriteService newsService = FavoriteService();
 
@@ -24,75 +25,66 @@ class NewsDetailScreenState extends State<newsDetailScreen> {
   }
 
   Future<void> checkFavoriteStatus() async {
-    final favoriteStatus = await newsService.isFavoriteNews(widget.newsId);
-    setState(() {
-      isFavorite = favoriteStatus;
-    });
+    try {
+      final favoriteStatus =
+          await newsService.isFavoriteNews(widget.newsData.id!);
+      setState(() {
+        isFavorite = favoriteStatus;
+      });
+    } catch (error) {
+      print('Error checking favorite status: $error');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    // Format the date using DateFormat
+    String formattedDate = widget.newsData.date != null
+        ? DateFormat.yMMMd().format(widget.newsData.date!.toDate())
+        : 'Kosong';
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text('News Detail'),
-      ),
+      appBar: AppBar(),
       body: SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.all(5.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      widget.newsData['tittle'] ?? '',
-                      style: TextStyle(
-                        color: const Color.fromARGB(255, 0, 0, 0),
-                        fontSize: 26.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      overflow: TextOverflow.fade,
-                    ),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10, bottom: 10),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        widget.newsData['date'] ?? '',
-                        style: TextStyle(
-                          color: Color.fromRGBO(116, 117, 137, 1),
-                          fontSize: 15.0,
-                        ),
-                        overflow: TextOverflow.clip,
-                      ),
-                    ),
-                  ],
+              Text(
+                widget.newsData.tittle ?? '',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 26.0,
+                  fontWeight: FontWeight.bold,
                 ),
+                overflow: TextOverflow.fade,
               ),
-              SizedBox(
-                height: 10,
+              SizedBox(height: 10),
+              Text(
+                formattedDate,
+                style: TextStyle(
+                  color: Color.fromRGBO(116, 117, 137, 1),
+                  fontSize: 15.0,
+                ),
+                overflow: TextOverflow.clip,
               ),
+              SizedBox(height: 10),
               Container(
-                height: 200.0,
+                height: 220.0,
                 width: double.infinity,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: NetworkImage(widget.newsData['urlimage'] ?? ''),
-                    fit: BoxFit.cover,
+                    image: NetworkImage(widget.newsData.urlImage ?? ''),
+                    fit: BoxFit.fill,
                   ),
                   borderRadius: BorderRadius.circular(12.0),
                 ),
               ),
+              SizedBox(height: 10),
               Container(
-                margin: EdgeInsets.only(top: 10.0),
                 decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 209, 209, 209),
+                  color: Colors.transparent,
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                   boxShadow: [
                     BoxShadow(
@@ -101,22 +93,14 @@ class NewsDetailScreenState extends State<newsDetailScreen> {
                     ),
                   ],
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 50),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        widget.newsData['descr'] ?? '',
-                        style: TextStyle(
-                          color: const Color.fromARGB(255, 0, 0, 0),
-                          fontSize: 15.0,
-                        ),
-                        overflow: TextOverflow.fade,
-                      ),
-                    ),
-                  ],
+                padding: EdgeInsets.all(10.0),
+                child: Text(
+                  widget.newsData.description ?? '',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 15.0,
+                  ),
+                  overflow: TextOverflow.fade,
                 ),
               ),
             ],
@@ -128,14 +112,20 @@ class NewsDetailScreenState extends State<newsDetailScreen> {
         onPressed: () async {
           final uid = await getCurrentUserId();
           if (uid != null) {
-            if (isFavorite) {
-              await newsService.removeFavoriteNews(widget.newsId);
-            } else {
-              await newsService.addFavoriteNews(widget.newsId);
+            try {
+              if (isFavorite) {
+                await newsService.removeFavoriteNews(widget.newsData.id!);
+                print("Dihapus Dari Favorites ${widget.newsData.id}");
+              } else {
+                await newsService.addFavoriteNews(widget.newsData.id!);
+                print("Telah Dtambahkan Di Favorite ${widget.newsData.id}");
+              }
+              setState(() {
+                isFavorite = !isFavorite;
+              });
+            } catch (error) {
+              print('Error Status $error');
             }
-            setState(() {
-              isFavorite = !isFavorite;
-            });
           }
         },
         child: Icon(

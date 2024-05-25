@@ -1,26 +1,54 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:kp_manajemen_bengkel/models/newsModels.dart';
 import 'package:kp_manajemen_bengkel/services/user.dart';
 
 class NewsService {
-  Future<List<Map<String, dynamic>>?> getNews() async {
+  Future<List<NewsM>?> getNews() async {
     try {
       QuerySnapshot<Map<String, dynamic>> querySnapshot =
           await FirebaseFirestore.instance.collection('news').get();
-      List<Map<String, dynamic>> newsList = [];
-      for (QueryDocumentSnapshot<Map<String, dynamic>> snapshot
-          in querySnapshot.docs) {
+      List<NewsM> newsList = querySnapshot.docs.map((snapshot) {
         Map<String, dynamic> data = snapshot.data();
-        if (data != null) {
-          data['id'] = snapshot.id;
-          newsList.add(data);
-        }
-      }
+        return NewsM.fromMap(data, snapshot.id);
+      }).toList();
       return newsList;
     } catch (e) {
       print('Error fetching news: $e');
       return null;
+    }
+  }
+
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
+
+  Future<String?> uploadImage(File image) async {
+    try {
+      final storageRef = _storage
+          .ref()
+          .child('images/news_images/${DateTime.now().toIso8601String()}');
+      final uploadTask = storageRef.putFile(image);
+      final snapshot = await uploadTask;
+      return await snapshot.ref.getDownloadURL();
+    } catch (e) {
+      print('Error uploading image: $e');
+      return null;
+    }
+  }
+
+  Future<void> addNews(String tittle, String description, Timestamp date,
+      String urlimage) async {
+    try {
+      await _firestore.collection('news').add({
+        'tittle': tittle,
+        'descr': description,
+        'date': date,
+        'urlimage': urlimage,
+      });
+    } catch (e) {
+      throw Exception('Failed to add news: $e');
     }
   }
 }
@@ -57,18 +85,18 @@ class FavoriteService {
     }
   }
 
-  Future<List<Map<String, dynamic>>?> getNewsFavorite() async {
+  Future<List<NewsM>?> getNewsFavorite() async {
     try {
-      List<Map<String, dynamic>>? allNews = await newsService.getNews();
+      List<NewsM>? allNews = await newsService.getNews();
       if (allNews != null) {
         String? uid = await getCurrentUserId();
         if (uid != null) {
-          List<Map<String, dynamic>> favoriteNewsList = [];
-          for (Map<String, dynamic> news in allNews) {
+          List<NewsM> favoriteNewsList = [];
+          for (NewsM news in allNews) {
             DocumentReference<Map<String, dynamic>> favoritesDocRef =
                 FirebaseFirestore.instance
                     .collection('news')
-                    .doc(news['id'])
+                    .doc(news.id)
                     .collection('favorites')
                     .doc(uid);
 

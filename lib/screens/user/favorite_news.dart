@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kp_manajemen_bengkel/models/newsModels.dart';
 import 'package:kp_manajemen_bengkel/services/news.dart';
 import 'package:kp_manajemen_bengkel/screens/detail_screens/news_detailScreenUser.dart';
 
@@ -8,8 +9,8 @@ class FavoriteNewsUser extends StatefulWidget {
 }
 
 class _FavoriteNewsUserState extends State<FavoriteNewsUser> {
-  List<Map<String, dynamic>>? favoriteNews;
-  List<Map<String, dynamic>>? filteredFavoriteNews;
+  List<NewsM>? favoriteNews;
+  List<NewsM>? filteredFavoriteNews;
   TextEditingController _searchController = TextEditingController();
   String _searchText = '';
   bool isLoading = true;
@@ -37,7 +38,7 @@ class _FavoriteNewsUserState extends State<FavoriteNewsUser> {
       favoriteNews = await FavoriteService().getNewsFavorite();
       filteredFavoriteNews = favoriteNews;
     } catch (error) {
-      print('Error fetching favorite news: $error');
+      print('Gagal Mendapatkan Data: $error');
     } finally {
       setState(() {
         isLoading = false;
@@ -52,9 +53,10 @@ class _FavoriteNewsUserState extends State<FavoriteNewsUser> {
         filteredFavoriteNews = favoriteNews;
       } else {
         filteredFavoriteNews = favoriteNews?.where((news) {
-          return news['tittle']
-              .toLowerCase()
-              .contains(_searchText.toLowerCase());
+          return news.tittle
+                  ?.toLowerCase()
+                  .contains(_searchText.toLowerCase()) ??
+              false;
         }).toList();
       }
     });
@@ -139,9 +141,7 @@ class _FavoriteNewsUserState extends State<FavoriteNewsUser> {
                       ? ListView.builder(
                           itemCount: filteredFavoriteNews!.length,
                           itemBuilder: (BuildContext context, int index) {
-                            Map<String, dynamic> newsGet =
-                                filteredFavoriteNews![index];
-                            String newsId = newsGet['id'];
+                            NewsM newsGet = filteredFavoriteNews![index];
                             return GestureDetector(
                               onTap: () {
                                 Navigator.push(
@@ -149,7 +149,6 @@ class _FavoriteNewsUserState extends State<FavoriteNewsUser> {
                                   MaterialPageRoute(
                                     builder: (context) => newsDetailScreen(
                                       newsData: newsGet,
-                                      newsId: newsId,
                                     ),
                                   ),
                                 );
@@ -162,13 +161,13 @@ class _FavoriteNewsUserState extends State<FavoriteNewsUser> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
-                                      height: 120.0,
+                                      height: 160.0,
                                       width: double.infinity,
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
                                           image: NetworkImage(
-                                              newsGet['urlimage'] ?? ''),
-                                          fit: BoxFit.cover,
+                                              newsGet.urlImage ?? ''),
+                                          fit: BoxFit.fill,
                                         ),
                                         borderRadius: BorderRadius.vertical(
                                           top: Radius.circular(10),
@@ -194,7 +193,7 @@ class _FavoriteNewsUserState extends State<FavoriteNewsUser> {
                                         children: [
                                           Expanded(
                                             child: Text(
-                                              newsGet['tittle'] ?? '',
+                                              newsGet.tittle ?? '',
                                               style: TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 15.0,

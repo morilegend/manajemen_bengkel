@@ -1,52 +1,31 @@
-class newsM {
-  final String date;
-  final String descr;
-  final String tittle;
-  final String urlImage;
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-  newsM({
-    required this.date,
-    required this.descr,
-    required this.tittle,
-    required this.urlImage,
-  });
+class NewsM {
+  String? id;
+  String? tittle;
+  String? description;
+  Timestamp? date;
+  String? urlImage;
 
-  factory newsM.fromMap(Map<String, dynamic> data, String documentId) {
-    return newsM(
-      date: data['date'] ?? '',
-      descr: data['descr'] ?? '',
-      tittle: data['tittle'] ?? '',
-      urlImage: data['urlimage'] ?? '',
+  NewsM({this.id, this.tittle, this.description, this.date, this.urlImage});
+
+  factory NewsM.fromMap(Map<String, dynamic> data, String documentId) {
+    return NewsM(
+      id: documentId,
+      tittle: data['tittle'],
+      description: data['descr'],
+      date: data['date'],
+      urlImage: data['urlimage'],
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'date': date,
-      'descr': descr,
+      'id': id,
       'tittle': tittle,
+      'description': description,
+      'date': date,
       'urlimage': urlImage,
-    };
-  }
-}
-
-//Class Favorite
-class Favorite {
-  final String userId;
-
-  Favorite({
-    required this.userId,
-  });
-
-  factory Favorite.fromMap(Map<String, dynamic> data) {
-    return Favorite(
-      userId: data['userId'] ?? '',
-    );
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'userId': userId,
     };
   }
 }

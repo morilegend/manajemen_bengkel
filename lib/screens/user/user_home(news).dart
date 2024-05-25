@@ -1,7 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:kp_manajemen_bengkel/screens/user/bottomnav_user.dart';
-import 'package:kp_manajemen_bengkel/screens/user/favorite_news.dart';
+import 'package:kp_manajemen_bengkel/models/newsModels.dart';
 import 'package:kp_manajemen_bengkel/screens/detail_screens/news_detailScreenUser.dart';
+import 'package:kp_manajemen_bengkel/screens/user/favorite_news.dart';
 import 'package:kp_manajemen_bengkel/services/news.dart';
 import 'package:kp_manajemen_bengkel/services/user.dart';
 
@@ -15,7 +16,7 @@ class UserHome extends StatefulWidget {
 class _UserHomeState extends State<UserHome> {
   TextEditingController _searchController = TextEditingController();
   String _searchText = '';
-  final NewsService GetNews = NewsService();
+  final NewsService getNews = NewsService();
   final UserData getUserData = UserData();
 
   @override
@@ -23,7 +24,7 @@ class _UserHomeState extends State<UserHome> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(231, 229, 93, 1),
-        automaticallyImplyLeading: false, //Menghilangkan Tombol Back
+        automaticallyImplyLeading: false,
         elevation: 3,
         shadowColor: Colors.black,
         shape: RoundedRectangleBorder(
@@ -52,7 +53,6 @@ class _UserHomeState extends State<UserHome> {
                         color: Color.fromARGB(255, 75, 73, 73),
                       ),
                     ),
-                    //Penggunaan FuruteBuilder<String?>
                     Container(
                       width: 190,
                       height: 31,
@@ -125,8 +125,10 @@ class _UserHomeState extends State<UserHome> {
                                 ),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0),
-                                  borderSide:
-                                      BorderSide(width: 2, color: Colors.black),
+                                  borderSide: BorderSide(
+                                    width: 2,
+                                    color: Colors.black,
+                                  ),
                                 ),
                               ),
                             ),
@@ -188,10 +190,10 @@ class _UserHomeState extends State<UserHome> {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(bottom: 20.0),
-              child: FutureBuilder(
-                future: GetNews.getNews(),
+              child: FutureBuilder<List<NewsM>?>(
+                future: getNews.getNews(),
                 builder: (BuildContext context,
-                    AsyncSnapshot<List<Map<String, dynamic>>?> snapshot) {
+                    AsyncSnapshot<List<NewsM>?> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(
                       child: CircularProgressIndicator(),
@@ -200,21 +202,32 @@ class _UserHomeState extends State<UserHome> {
                     return Center(
                       child: Text('Error: ${snapshot.error}'),
                     );
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return Center(
+                      child: Text('No news available.'),
+                    );
                   } else {
-                    //Cari Berdasarkan tittle
-                    List<Map<String, dynamic>> filteredNews = snapshot.data!
+                    List<NewsM> filteredNews = snapshot.data!
                         .where((news) =>
-                            news['tittle']
+                            news.tittle
                                 ?.toLowerCase()
                                 .contains(_searchText.toLowerCase()) ??
                             false)
                         .toList();
+
+                    // Filtered By Date
+                    filteredNews.sort((a, b) {
+                      // Check
+                      Timestamp dateA = a.date ?? Timestamp(0, 0);
+                      Timestamp dateB = b.date ?? Timestamp(0, 0);
+                      return dateB.compareTo(dateA);
+                    });
+
                     return ListView.builder(
                       itemCount: filteredNews.length,
                       itemBuilder: (BuildContext context, int index) {
-                        Map<String, dynamic> newsGet = filteredNews[index];
-                        // Get Document ID to --> newsDetailScreen
-                        String newsId = newsGet['id'];
+                        NewsM newsGet = filteredNews[index];
+
                         return GestureDetector(
                           onTap: () {
                             Navigator.push(
@@ -222,7 +235,6 @@ class _UserHomeState extends State<UserHome> {
                               MaterialPageRoute(
                                 builder: (context) => newsDetailScreen(
                                   newsData: newsGet,
-                                  newsId: newsId,
                                 ),
                               ),
                             );
@@ -235,13 +247,13 @@ class _UserHomeState extends State<UserHome> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
-                                  height: 120.0,
+                                  height: 160.0,
                                   width: double.infinity,
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
-                                      image: NetworkImage(
-                                          newsGet['urlimage'] ?? ''),
-                                      fit: BoxFit.cover,
+                                      image:
+                                          NetworkImage(newsGet.urlImage ?? ''),
+                                      fit: BoxFit.fill,
                                     ),
                                     borderRadius: BorderRadius.vertical(
                                       top: Radius.circular(10),
@@ -267,7 +279,7 @@ class _UserHomeState extends State<UserHome> {
                                     children: [
                                       Expanded(
                                         child: Text(
-                                          newsGet['tittle'] ?? '',
+                                          newsGet.tittle ?? '',
                                           style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 15.0,
