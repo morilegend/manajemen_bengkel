@@ -204,7 +204,7 @@ class _UserHomeState extends State<UserHome> {
                     );
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                     return Center(
-                      child: Text('No news available.'),
+                      child: Text('Berita Kosong'),
                     );
                   } else {
                     List<NewsM> filteredNews = snapshot.data!
