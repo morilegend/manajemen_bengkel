@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:kp_manajemen_bengkel/models/newsModels.dart';
-import 'package:kp_manajemen_bengkel/screens/detail_screens/news_detailScreenUser.dart';
+import 'package:kp_manajemen_bengkel/screens/user/detail_screens_user/news_detailScreenUser.dart';
 import 'package:kp_manajemen_bengkel/screens/user/favorite_news.dart';
-import 'package:kp_manajemen_bengkel/services/news.dart';
-import 'package:kp_manajemen_bengkel/services/user.dart';
+import 'package:kp_manajemen_bengkel/services/newsServices.dart';
+import 'package:kp_manajemen_bengkel/services/userServices.dart';
 
 class UserHome extends StatefulWidget {
   UserHome({Key? key}) : super(key: key);
@@ -21,6 +22,9 @@ class _UserHomeState extends State<UserHome> {
 
   @override
   Widget build(BuildContext context) {
+    //Screen Size
+    var screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(231, 229, 93, 1),
@@ -126,7 +130,7 @@ class _UserHomeState extends State<UserHome> {
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0),
                                   borderSide: BorderSide(
-                                    width: 2,
+                                    width: screenWidth * 0.20,
                                     color: Colors.black,
                                   ),
                                 ),
@@ -134,10 +138,9 @@ class _UserHomeState extends State<UserHome> {
                             ),
                           ),
                         ),
-                        //Icon Favorite
                         Positioned(
-                          left: 205.9,
-                          bottom: 26,
+                          left: screenWidth * 0.65,
+                          bottom: 20,
                           child: GestureDetector(
                             onTap: () {
                               Navigator.push(
@@ -147,35 +150,45 @@ class _UserHomeState extends State<UserHome> {
                                 ),
                               );
                             },
-                            child: Icon(
-                              Icons.favorite,
-                              color: Colors.red,
-                              size: 65,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 10.0),
+                              child: Container(
+                                color: Colors.transparent,
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Container(
+                                      child: Transform.rotate(
+                                        angle: 150,
+                                        child: Icon(
+                                          Icons.square_rounded,
+                                          color: Colors.black,
+                                          size: 62,
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      child: Icon(
+                                        Icons.favorite,
+                                        color: Colors.yellow,
+                                        size: 30,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         ),
                         //Text Favorite News
                         Positioned(
-                          bottom: 10,
-                          left: 209.9,
+                          bottom: 0,
+                          left: screenWidth * 0.67,
                           right: 0,
                           child: Text(
                             'Favorite',
                             style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          left: 218.9,
-                          right: 0,
-                          top: 70,
-                          child: Text(
-                            'News',
-                            style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 13,
                               color: Colors.black,
                             ),
                           ),

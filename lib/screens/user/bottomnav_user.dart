@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kp_manajemen_bengkel/screens/user/Services_User.dart';
-import 'package:kp_manajemen_bengkel/screens/user/Order_User.dart';
+import 'package:kp_manajemen_bengkel/screens/user/Order_HistoryUser.dart';
 import 'package:kp_manajemen_bengkel/screens/user/Options_user/Settings_user_Main.dart';
 import 'package:kp_manajemen_bengkel/screens/user/favorite_news.dart';
 import 'package:kp_manajemen_bengkel/screens/user/user_home(news).dart';
@@ -18,7 +18,7 @@ class NavbarUserState extends State<NavbarUser> {
   static List<Widget> _widgetOptions = <Widget>[
     UserHome(),
     ServicesUser(),
-    OrderUsers(),
+    Order_HistoryUser(),
     AccountUser(),
   ];
 
@@ -52,15 +52,15 @@ class NavbarUserState extends State<NavbarUser> {
             tabs: [
               GButton(
                 icon: Icons.home,
-                text: 'Services',
+                text: 'Home',
               ),
               GButton(
                 icon: Icons.car_crash,
-                text: 'Order',
+                text: 'Services',
               ),
               GButton(
                 icon: Icons.note_alt,
-                text: 'Profile',
+                text: 'Order',
               ),
               GButton(
                 icon: Icons.settings,

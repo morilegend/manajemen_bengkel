@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:kp_manajemen_bengkel/services/services_list.dart';
+import 'package:kp_manajemen_bengkel/models/servicesModels.dart';
+import 'package:kp_manajemen_bengkel/screens/user/detail_screens_user/services_detailScreenUser.dart';
+import 'package:kp_manajemen_bengkel/screens/user/detail_screens_user/Screen_BookOrderNow.dart';
+import 'package:kp_manajemen_bengkel/services/services.dart';
 
 class ServicesUser extends StatefulWidget {
   const ServicesUser({Key? key}) : super(key: key);
@@ -8,15 +11,17 @@ class ServicesUser extends StatefulWidget {
   State<ServicesUser> createState() => _ServicesUserState();
 }
 
-final ServicesList getServices = ServicesList();
-
 class _ServicesUserState extends State<ServicesUser> {
+  final ServiceService serviceService = ServiceService();
+
   @override
   Widget build(BuildContext context) {
+    var screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(231, 229, 93, 1),
-        automaticallyImplyLeading: false, //Menghilangkan Tombol Back
+        automaticallyImplyLeading: false,
         elevation: 3,
         shadowColor: Colors.black,
         shape: RoundedRectangleBorder(
@@ -53,106 +58,136 @@ class _ServicesUserState extends State<ServicesUser> {
           ),
         ),
       ),
-      body: FutureBuilder(
-        future: getServices.getServices(),
-        builder: (BuildContext context,
-            AsyncSnapshot<List<Map<String, dynamic>>?> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          } else {
-            // Buat menjadi 2 kotak
-            List<Map<String, dynamic>> services = snapshot.data!;
-            List<Map<String, dynamic>> leftColumn =
-                services.sublist(0, (services.length / 2).ceil());
-            List<Map<String, dynamic>> rightColumn =
-                services.sublist((services.length / 2).ceil());
+      body: Column(
+        children: [
+          Expanded(
+            child: FutureBuilder<List<ServiceM>>(
+              future: serviceService.getServices(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<ServiceM>> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Error: ${snapshot.error}'),
+                  );
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return Center(
+                    child: Text('No services available'),
+                  );
+                } else {
+                  List<ServiceM> services = snapshot.data!;
 
-            return GridView.count(
-              crossAxisCount: 2,
-              children: [
-                _buildColumn(leftColumn),
-                _buildColumn(rightColumn),
-              ],
-            );
-          }
-        },
-      ),
-    );
-  }
+                  // Sort services by timestamp (latest first)
+                  services.sort((a, b) => b.timestamp!.compareTo(a.timestamp!));
 
-  Widget _buildColumn(List<Map<String, dynamic>> columnData) {
-    return Column(
-      children: columnData.map((service) {
-        return GestureDetector(
-          // onTap: () {
-          //   Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //       builder: (context) => newsDetailScreen(
-          //         newsData: newsGet,
-          //         newsId: newsId,
-          //       ),
-          //     ),
-          //   );
-          // },
-          child: Container(
-            margin: EdgeInsets.all(10.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  height: 100.0,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(service['urlimage'] ?? ''),
-                      fit: BoxFit.cover,
+                  return GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 0.75,
                     ),
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(10),
-                    ),
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.all(6.0),
-                  decoration: BoxDecoration(
-                    color: Color.fromRGBO(231, 229, 93, 1),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey,
-                        blurRadius: 10,
-                        spreadRadius: 1,
-                      )
-                    ],
-                    borderRadius: BorderRadius.vertical(
-                      bottom: Radius.circular(10),
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Center(
-                          child: Text(
-                            service['name'] ?? '',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14.0,
+                    itemCount: services.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      ServiceM service = services[index];
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  ServicesDetailScreenUser(service: service),
                             ),
-                            overflow: TextOverflow.ellipsis,
+                          );
+                        },
+                        child: Container(
+                          margin: EdgeInsets.all(10.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                height: 120.0,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: NetworkImage(service.urlImage ?? ''),
+                                    fit: BoxFit.fill,
+                                  ),
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(10),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                padding: EdgeInsets.all(6.0),
+                                width: screenWidth * 0.6,
+                                height: screenWidth * 0.11,
+                                decoration: BoxDecoration(
+                                  color: Color.fromRGBO(231, 229, 93, 1),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey,
+                                      blurRadius: 10,
+                                      spreadRadius: 1,
+                                    )
+                                  ],
+                                  borderRadius: BorderRadius.vertical(
+                                    bottom: Radius.circular(10),
+                                  ),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      service.name ?? '',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight.bold),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                      );
+                    },
+                  );
+                }
+              },
             ),
           ),
-        );
-      }).toList(),
+          // To Order Services
+          Padding(
+            padding: const EdgeInsets.only(bottom: 82),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Screen_BookOrderNow(),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromRGBO(231, 229, 93, 1),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10))),
+              child: Text(
+                '+ Book Services Now',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

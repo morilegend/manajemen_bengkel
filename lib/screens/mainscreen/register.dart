@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kp_manajemen_bengkel/screens/mainscreen/login.dart';
-import 'package:kp_manajemen_bengkel/services/user.dart';
+import 'package:kp_manajemen_bengkel/services/userServices.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);

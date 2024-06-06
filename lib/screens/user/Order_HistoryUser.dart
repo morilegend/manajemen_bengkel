@@ -1,32 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kp_manajemen_bengkel/models/historyModels.dart';
-import 'package:kp_manajemen_bengkel/screens/admin/detail_screens_admin/history_detailScreenAdmin.dart';
+import 'package:kp_manajemen_bengkel/screens/user/detail_screens_user/history_detailScreenUser.dart';
 import 'package:kp_manajemen_bengkel/services/historyServices.dart';
 import 'package:intl/intl.dart';
 
-class OrderAdmin extends StatefulWidget {
-  const OrderAdmin({super.key});
+class Order_HistoryUser extends StatefulWidget {
+  const Order_HistoryUser({super.key});
 
   @override
-  _OrderAdminState createState() => _OrderAdminState();
+  _Order_HistoryUserState createState() => _Order_HistoryUserState();
 }
 
-class _OrderAdminState extends State<OrderAdmin> {
+class _Order_HistoryUserState extends State<Order_HistoryUser> {
   late Future<List<HistoryM>> _futureHistories;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   void initState() {
     super.initState();
-    _futureHistories = HistoryService.getAllHistories();
-  }
-
-  Future<void> _updateStatus(String historyId, String status) async {
-    await HistoryService.updateStatus(historyId, status);
-    setState(() {
-      _futureHistories = HistoryService.getAllHistories();
-    });
+    final User? user = _auth.currentUser;
+    if (user != null) {
+      _futureHistories = HistoryService.getUserHistories(user.uid);
+    } else {
+      _futureHistories = Future.error("User not logged in");
+    }
   }
 
   @override
@@ -34,7 +32,7 @@ class _OrderAdminState extends State<OrderAdmin> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(231, 229, 93, 1),
-        title: Text('All Orders'),
+        title: Text('Order History'),
       ),
       body: FutureBuilder<List<HistoryM>>(
         future: _futureHistories,
@@ -58,20 +56,25 @@ class _OrderAdminState extends State<OrderAdmin> {
                 return Column(
                   children: [
                     ListTile(
-                      title: Text(history.id!),
+                      title: Text(history.id ?? 'Unknown ID'),
                       subtitle: Text(formattedDate),
                       trailing: Text(history.status),
                       onTap: () async {
-                        Navigator.push(
+                        final updatedHistory = await Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                HistoryDetailScreenAdmin(history: history),
+                                HistoryDetailScreenUser(history: history),
                           ),
                         );
+
+                        if (updatedHistory != null) {
+                          setState(() {
+                            histories[index] = updatedHistory;
+                          });
+                        }
                       },
                     ),
-                    Divider()
                   ],
                 );
               },

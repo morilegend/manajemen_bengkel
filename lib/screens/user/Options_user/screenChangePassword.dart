@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kp_manajemen_bengkel/screens/user/bottomnav_user.dart';
 import 'package:kp_manajemen_bengkel/screens/user/user_home(news).dart';
-import 'package:kp_manajemen_bengkel/services/user.dart';
+import 'package:kp_manajemen_bengkel/services/userServices.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({Key? key}) : super(key: key);

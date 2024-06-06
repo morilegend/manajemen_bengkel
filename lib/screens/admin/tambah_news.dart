@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:kp_manajemen_bengkel/services/news.dart';
+import 'package:kp_manajemen_bengkel/services/newsServices.dart';
 import 'dart:io';
 import 'package:intl/intl.dart'; // Package for date formatting
 
@@ -16,7 +16,7 @@ class _TambahNewsState extends State<TambahNews> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
-  File? _selectedImage;
+  File? _imageFile;
   bool _isLoading = false;
   final NewsService _newsService = NewsService();
 
@@ -28,13 +28,13 @@ class _TambahNewsState extends State<TambahNews> {
   }
 
   Future<void> _pickImage() async {
-    final pickedImage =
+    final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedImage != null) {
-      setState(() {
-        _selectedImage = File(pickedImage.path);
-      });
-    }
+    setState(() {
+      if (pickedFile != null) {
+        _imageFile = File(pickedFile.path);
+      }
+    });
   }
 
   Future<void> _submitNews() async {
@@ -42,7 +42,7 @@ class _TambahNewsState extends State<TambahNews> {
     final description = _descriptionController.text;
     final date = Timestamp.fromDate(DateTime.now());
 
-    if (title.isEmpty || description.isEmpty || _selectedImage == null) {
+    if (title.isEmpty || description.isEmpty || _imageFile == null) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('Silakan isi semua field')));
       return;
@@ -53,7 +53,7 @@ class _TambahNewsState extends State<TambahNews> {
     });
 
     try {
-      final urlImage = await _newsService.uploadImage(_selectedImage!);
+      final urlImage = await _newsService.uploadImage(_imageFile!);
       if (urlImage != null) {
         await _newsService.addNews(title, description, date, urlImage);
         ScaffoldMessenger.of(context)
@@ -96,33 +96,28 @@ class _TambahNewsState extends State<TambahNews> {
                 controller: _titleController,
                 decoration: InputDecoration(labelText: 'Judul'),
               ),
-              TextField(
-                controller: _dateController,
-                decoration: InputDecoration(labelText: 'Tanggal'),
-                readOnly: true,
-              ),
               SizedBox(height: 20),
               Container(
                 decoration: BoxDecoration(
-                    border: Border.all(style: BorderStyle.solid, width: 4),
+                    border: Border.all(style: BorderStyle.solid, width: 2),
                     color: Colors.grey,
                     borderRadius: BorderRadius.circular(10)),
                 height: 200.0,
                 width: double.infinity,
-                child: _selectedImage != null
-                    ? Image.file(
-                        _selectedImage!,
-                        fit: BoxFit.fill,
-                      )
-                    : TextButton.icon(
-                        onPressed: _pickImage,
-                        icon: Icon(
-                          Icons.add,
-                          size: 90,
-                          color: Colors.black,
-                        ),
-                        label: Text(''),
-                      ),
+                child: GestureDetector(
+                  onTap: _pickImage,
+                  child: _imageFile == null
+                      ? Container(
+                          color: Colors.grey[200],
+                          height: 200,
+                          width: double.infinity,
+                          child: Icon(Icons.add_photo_alternate, size: 100),
+                        )
+                      : Image.file(_imageFile!,
+                          height: 200,
+                          width: double.infinity,
+                          fit: BoxFit.fill),
+                ),
               ),
               SizedBox(height: 2),
               TextField(

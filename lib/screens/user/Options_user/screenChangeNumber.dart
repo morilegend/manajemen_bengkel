@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:kp_manajemen_bengkel/services/user.dart';
+import 'package:kp_manajemen_bengkel/screens/user/Options_user/Settings_user_Main.dart';
+import 'package:kp_manajemen_bengkel/screens/user/bottomnav_user.dart';
+import 'package:kp_manajemen_bengkel/services/userServices.dart';
 
 class ChangeNumberScreen extends StatefulWidget {
   const ChangeNumberScreen({Key? key}) : super(key: key);
@@ -69,6 +72,12 @@ class _ChangeNumberScreenState extends State<ChangeNumberScreen> {
                                 TextButton(
                                   onPressed: () {
                                     Navigator.of(context).pop();
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => (NavbarUser()),
+                                      ),
+                                    );
                                   },
                                   child: Text('OK'),
                                 ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:kp_manajemen_bengkel/services/user.dart';
+import 'package:kp_manajemen_bengkel/services/userServices.dart';
 
 class ChangeUsernameScreen extends StatefulWidget {
   const ChangeUsernameScreen({Key? key}) : super(key: key);
@@ -64,7 +64,7 @@ class _ChangeUsernameScreenState extends State<ChangeUsernameScreen> {
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title: Text("Berhasil"),
+                              title: Text("Berhasil Update"),
                               content: Text('Username Berhasil Di Update'),
                               actions: [
                                 TextButton(
@@ -83,7 +83,7 @@ class _ChangeUsernameScreenState extends State<ChangeUsernameScreen> {
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title: Text('Error'),
+                              title: Text('Gagal Update'),
                               content: Text('Username Gagal Diupdate'),
                               actions: [
                                 TextButton(

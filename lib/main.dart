@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:kp_manajemen_bengkel/screens/admin/bottomnav_admin.dart';
-import 'package:kp_manajemen_bengkel/screens/detail_screens/news_detailScreenUser.dart';
+import 'package:kp_manajemen_bengkel/screens/user/detail_screens_user/Screen_BookOrderNow.dart';
+import 'package:kp_manajemen_bengkel/screens/user/detail_screens_user/news_detailScreenUser.dart';
 import 'package:kp_manajemen_bengkel/screens/user/bottomnav_user.dart';
 import 'package:kp_manajemen_bengkel/screens/user/user_home(news).dart';
 import 'package:kp_manajemen_bengkel/services/firebase_options.dart';
@@ -12,7 +13,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kp_manajemen_bengkel/screens/mainscreen/login.dart';
 
 //Import Services
-import 'package:kp_manajemen_bengkel/services/user.dart';
+import 'package:kp_manajemen_bengkel/services/userServices.dart';
 
 //Jangan Lupa Add MultiDex --> build.gradle
 

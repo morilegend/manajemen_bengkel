@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kp_manajemen_bengkel/models/newsModels.dart';
-import 'package:kp_manajemen_bengkel/services/news.dart';
-import 'package:kp_manajemen_bengkel/screens/detail_screens/news_detailScreenUser.dart';
+import 'package:kp_manajemen_bengkel/services/newsServices.dart';
+import 'package:kp_manajemen_bengkel/screens/user/detail_screens_user/news_detailScreenUser.dart';
 
 class FavoriteNewsUser extends StatefulWidget {
   @override
