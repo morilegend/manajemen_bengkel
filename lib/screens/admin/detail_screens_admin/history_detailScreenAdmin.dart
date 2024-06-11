@@ -173,7 +173,7 @@ class _HistoryDetailScreenAdminState extends State<HistoryDetailScreenAdmin> {
                             ? 'Repairing'
                             : widget.history.status == 'Repairing'
                                 ? 'Done'
-                                : 'Update'),
+                                : 'Sedang Menunggu User'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color.fromRGBO(231, 229, 93, 1),
                     ),

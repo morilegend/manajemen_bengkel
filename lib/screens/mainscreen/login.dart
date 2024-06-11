@@ -89,9 +89,6 @@ class _LoginState extends State<Login> {
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10.0),
-                                    borderSide: BorderSide(
-                                      color: Colors.indigo,
-                                    ),
                                   )),
                               // Logic Pengecekan
                               onSaved: (value) {

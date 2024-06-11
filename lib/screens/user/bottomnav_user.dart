@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kp_manajemen_bengkel/screens/user/Services_User.dart';
 import 'package:kp_manajemen_bengkel/screens/user/Order_HistoryUser.dart';
-import 'package:kp_manajemen_bengkel/screens/user/Options_user/Settings_user_Main.dart';
+import 'package:kp_manajemen_bengkel/screens/Options_user/Settings_Main.dart';
 import 'package:kp_manajemen_bengkel/screens/user/favorite_news.dart';
 import 'package:kp_manajemen_bengkel/screens/user/user_home(news).dart';
 import 'package:lottie/lottie.dart';

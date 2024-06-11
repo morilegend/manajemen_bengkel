@@ -31,7 +31,7 @@ class HistoryService {
 
   static Future<void> updateHistory(HistoryM history) async {
     try {
-      await _historyCollection.doc(history.id).update(history.toMap());
+      await _historyCollection.doc(history.id!).update(history.toMap());
     } catch (e) {
       throw Exception('Failed to update history: $e');
     }
@@ -79,6 +79,40 @@ class HistoryService {
       });
     } catch (e) {
       throw Exception('Failed to update price and status: $e');
+    }
+  }
+
+  static Future<Map<String, double>> calculateIncome() async {
+    try {
+      QuerySnapshot querySnapshot =
+          await _historyCollection.where('status', isEqualTo: 'done').get();
+
+      double dailyIncome = 0;
+      double monthlyIncome = 0;
+
+      DateTime now = DateTime.now();
+      DateTime today = DateTime(now.year, now.month, now.day);
+      DateTime startOfMonth = DateTime(now.year, now.month, 1);
+
+      for (var doc in querySnapshot.docs) {
+        HistoryM history =
+            HistoryM.fromMap(doc.data() as Map<String, dynamic>, doc.id);
+        DateTime orderDate = history.orderDate;
+
+        if (orderDate.isAfter(today.subtract(Duration(days: 1)))) {
+          dailyIncome += history.price ?? 0;
+        }
+        if (orderDate.isAfter(startOfMonth)) {
+          monthlyIncome += history.price ?? 0;
+        }
+      }
+
+      return {
+        'dailyIncome': dailyIncome,
+        'monthlyIncome': monthlyIncome,
+      };
+    } catch (e) {
+      throw Exception('Failed to calculate income: $e');
     }
   }
 }

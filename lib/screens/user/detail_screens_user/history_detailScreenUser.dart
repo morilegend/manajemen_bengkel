@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kp_manajemen_bengkel/models/historyModels.dart';
 import 'package:kp_manajemen_bengkel/services/historyServices.dart';
+import 'package:intl/intl.dart';
 
 // History Status (Waiting,Pending,Approved,Repairing,Canceled,Done)
 
@@ -39,6 +40,15 @@ class _HistoryDetailScreenUserState extends State<HistoryDetailScreenUser> {
     Navigator.pop(context, updatedHistory);
   }
 
+  String _formatCurrency(double value) {
+    final NumberFormat currencyFormatter = NumberFormat.currency(
+      locale: 'id_ID',
+      symbol: 'Rp.',
+      decimalDigits: 0,
+    );
+    return currencyFormatter.format(value);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,10 +68,13 @@ class _HistoryDetailScreenUserState extends State<HistoryDetailScreenUser> {
               Text('Services:', style: TextStyle(fontSize: 16)),
               ...widget.history.services.map((service) {
                 String serviceName = service['name'];
-                double harga1 = service['harga1'];
-                double? harga2 = service['harga2'];
-                String hargaText =
-                    harga2 != null ? 'Rp.$harga1 - Rp.$harga2' : 'Rp.$harga1';
+                double harga1 = (service['harga1'] as num).toDouble();
+                double? harga2 = service['harga2'] != null
+                    ? (service['harga2'] as num).toDouble()
+                    : null;
+                String hargaText = harga2 != null
+                    ? '${_formatCurrency(harga1)} - ${_formatCurrency(harga2)}'
+                    : _formatCurrency(harga1);
                 return Text('$serviceName: $hargaText');
               }).toList(),
               SizedBox(height: 16),
@@ -69,7 +82,8 @@ class _HistoryDetailScreenUserState extends State<HistoryDetailScreenUser> {
                   style: TextStyle(fontSize: 16)),
               SizedBox(height: 16),
               if (widget.history.status == 'Pending') ...[
-                Text('Price: Rp.${widget.history.price}',
+                Text(
+                    'Price: ${_formatCurrency((widget.history.price ?? 0).toDouble())}',
                     style: TextStyle(fontSize: 16)),
                 SizedBox(height: 16),
                 Row(

@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kp_manajemen_bengkel/screens/admin/account_admin.dart';
 import 'package:kp_manajemen_bengkel/screens/admin/admin_home.dart';
 import 'package:kp_manajemen_bengkel/screens/admin/order_admin.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:kp_manajemen_bengkel/screens/Options_user/Settings_Main.dart';
 
 class NavbarAdmin extends StatefulWidget {
   @override
@@ -15,7 +15,7 @@ class NavbarAdminState extends State<NavbarAdmin> {
   static List<Widget> _widgetOptions = <Widget>[
     AdminHome(),
     OrderAdmin(),
-    AccountAdmin(),
+    AccountUser(),
   ];
 
   @override

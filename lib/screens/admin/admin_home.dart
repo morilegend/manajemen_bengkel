@@ -1,14 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:kp_manajemen_bengkel/screens/admin/account_admin.dart';
+import 'package:kp_manajemen_bengkel/screens/admin/detail_screens_admin/news_detailScreenAdmin.dart';
 import 'package:kp_manajemen_bengkel/screens/admin/menu/jasa/jasa_tampilAdmin.dart';
 import 'package:kp_manajemen_bengkel/screens/admin/menu/laporan_admin.dart';
 import 'package:kp_manajemen_bengkel/screens/admin/menu/pegawai/pegawai_tampilAdmin.dart';
 import 'package:kp_manajemen_bengkel/screens/admin/order_admin.dart';
 import 'package:kp_manajemen_bengkel/screens/admin/tambah_news.dart';
 import 'package:kp_manajemen_bengkel/models/newsModels.dart';
-import 'package:kp_manajemen_bengkel/screens/admin/detail_screens_admin/news_detailScreenAdmin.dart';
 import 'package:kp_manajemen_bengkel/services/newsServices.dart';
+import 'package:kp_manajemen_bengkel/models/historyModels.dart';
+import 'package:kp_manajemen_bengkel/services/historyServices.dart';
+import 'package:intl/intl.dart';
 
 class AdminHome extends StatefulWidget {
   const AdminHome({Key? key}) : super(key: key);
@@ -19,13 +22,58 @@ class AdminHome extends StatefulWidget {
 
 class _AdminHomeState extends State<AdminHome> {
   late Future<List<NewsM>?> _newsFuture;
+  late Future<List<HistoryM>> _historyFuture;
   final NewsService _newsService = NewsService();
+  final HistoryService _historyService = HistoryService();
   String _searchText = '';
+  int _dailyIncome = 0;
+  int _monthlyIncome = 0;
 
   @override
   void initState() {
     super.initState();
+    _initializeData();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _initializeData();
+  }
+
+  void _initializeData() {
     _newsFuture = _newsService.getNews();
+    _historyFuture = HistoryService.getAllHistories();
+    _calculateIncome();
+  }
+
+  void _calculateIncome() async {
+    List<HistoryM> histories = await HistoryService.getAllHistories();
+    int dailyIncome = 0;
+    int monthlyIncome = 0;
+
+    DateTime now = DateTime.now();
+    DateTime today = DateTime(now.year, now.month, now.day);
+    DateTime startOfMonth = DateTime(now.year, now.month, 1);
+
+    for (var history in histories) {
+      if (history.status == 'Done') {
+        DateTime orderDate = history.orderDate;
+        int price = history.price?.toInt() ?? 0;
+
+        if (orderDate.isAfter(today.subtract(Duration(days: 1)))) {
+          dailyIncome += price;
+        }
+        if (orderDate.isAfter(startOfMonth)) {
+          monthlyIncome += price;
+        }
+      }
+    }
+
+    setState(() {
+      _dailyIncome = dailyIncome;
+      _monthlyIncome = monthlyIncome;
+    });
   }
 
   @override
@@ -65,16 +113,16 @@ class _AdminHomeState extends State<AdminHome> {
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text(
+                          children: [
+                            const Text(
                               'Pendapatan Hari ini',
                               style: TextStyle(
                                   fontSize: 13,
                                   color: Color.fromARGB(201, 0, 0, 0)),
                             ),
                             Text(
-                              'Rp0', // <-- Berikan Sebuah Logic Untuk Mengganti Text Hari ini
-                              style: TextStyle(fontSize: 16),
+                              'Rp${NumberFormat("#,###").format(_dailyIncome)}',
+                              style: const TextStyle(fontSize: 16),
                             ),
                           ],
                         ),
@@ -82,16 +130,16 @@ class _AdminHomeState extends State<AdminHome> {
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text(
+                          children: [
+                            const Text(
                               'Pendapatan Bulan ini',
                               style: TextStyle(
                                   fontSize: 13,
                                   color: Color.fromARGB(201, 0, 0, 0)),
                             ),
                             Text(
-                              'Rp0', // <-- Berikan Sebuah Logic Untuk Mengganti Text Bulan ini
-                              style: TextStyle(fontSize: 16),
+                              'Rp${NumberFormat("#,###").format(_monthlyIncome)}',
+                              style: const TextStyle(fontSize: 16),
                             ),
                           ],
                         ),
@@ -139,7 +187,9 @@ class _AdminHomeState extends State<AdminHome> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => TampilJasaAdmin()),
-                                );
+                                ).then((_) {
+                                  _initializeData();
+                                });
                               },
                             ),
                           ),
@@ -166,7 +216,9 @@ class _AdminHomeState extends State<AdminHome> {
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           TampilPegawaiAdmin()),
-                                );
+                                ).then((_) {
+                                  _initializeData();
+                                });
                               },
                             ),
                           ),
@@ -189,7 +241,9 @@ class _AdminHomeState extends State<AdminHome> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => LaporanAdmin()),
-                                );
+                                ).then((_) {
+                                  _initializeData();
+                                });
                               },
                             ),
                           ),
@@ -248,11 +302,9 @@ class _AdminHomeState extends State<AdminHome> {
                           return Center(child: Text('Berita Kosong'));
                         } else {
                           List<NewsM> filteredNews = snapshot.data!
-                              .where((news) =>
-                                  news.tittle
-                                      ?.toLowerCase()
-                                      .contains(_searchText.toLowerCase()) ??
-                                  false)
+                              .where((news) => (news.tittle ?? '')
+                                  .toLowerCase()
+                                  .contains(_searchText.toLowerCase()))
                               .toList();
 
                           // Filtered By Date
@@ -278,7 +330,9 @@ class _AdminHomeState extends State<AdminHome> {
                                           newsDetailScreenAdmin(
                                               newsData: newsGet),
                                     ),
-                                  );
+                                  ).then((_) {
+                                    _initializeData();
+                                  });
                                 },
                                 child: Container(
                                   margin: EdgeInsets.all(10.0),
