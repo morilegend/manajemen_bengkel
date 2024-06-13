@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:kp_manajemen_bengkel/models/servicesModels.dart';
-import 'package:kp_manajemen_bengkel/screens/user/detail_screens_user/Screen_BookOrderNow.dart';
 
 class ServicesDetailScreenUser extends StatelessWidget {
   final ServiceM service;

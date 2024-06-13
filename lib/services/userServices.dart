@@ -49,7 +49,8 @@ class userLogin {
         print(e.code);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('User Tidak Ditemukan'),
+            content:
+                Text('Email atau password salah, silakhan periksa kembali'),
             duration: Duration(seconds: 4),
           ),
         );

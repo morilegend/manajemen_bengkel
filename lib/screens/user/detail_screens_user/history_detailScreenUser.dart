@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:kp_manajemen_bengkel/models/historyModels.dart';
 import 'package:kp_manajemen_bengkel/services/historyServices.dart';
 import 'package:intl/intl.dart';
@@ -52,9 +53,24 @@ class _HistoryDetailScreenUserState extends State<HistoryDetailScreenUser> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color.fromRGBO(231, 229, 93, 1),
-        title: Text('History Detail'),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(40),
+        child: AppBar(
+          backgroundColor: Color.fromRGBO(231, 229, 93, 1),
+          elevation: 3,
+          shadowColor: Colors.black,
+          automaticallyImplyLeading: true,
+          title: Text(
+            "History Detail",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(10),
+              bottomRight: Radius.circular(10),
+            ),
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -62,10 +78,10 @@ class _HistoryDetailScreenUserState extends State<HistoryDetailScreenUser> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Car Type: ${widget.history.carType}',
-                  style: TextStyle(fontSize: 16)),
-              SizedBox(height: 16),
-              Text('Services:', style: TextStyle(fontSize: 16)),
+              Text(
+                'Services Yang Dipilih',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
               ...widget.history.services.map((service) {
                 String serviceName = service['name'];
                 double harga1 = (service['harga1'] as num).toDouble();
@@ -77,6 +93,13 @@ class _HistoryDetailScreenUserState extends State<HistoryDetailScreenUser> {
                     : _formatCurrency(harga1);
                 return Text('$serviceName: $hargaText');
               }).toList(),
+              SizedBox(
+                height: 16,
+              ),
+              Text(
+                'Car Type: ${widget.history.carType}',
+                style: TextStyle(fontSize: 16),
+              ),
               SizedBox(height: 16),
               Text('Notes: ${widget.history.notes}',
                   style: TextStyle(fontSize: 16)),
@@ -96,22 +119,28 @@ class _HistoryDetailScreenUserState extends State<HistoryDetailScreenUser> {
                         style: TextStyle(color: Colors.black),
                       ),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
+                        backgroundColor: Color.fromRGBO(231, 229, 93, 1),
                       ),
                     ),
                     ElevatedButton(
                       onPressed: () => _updateHistory('Canceled'),
                       child: Text(
                         'Reject',
-                        style: TextStyle(color: Colors.black),
+                        style:
+                            TextStyle(color: Color.fromRGBO(231, 229, 93, 1)),
                       ),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
+                        backgroundColor: Colors.black,
                       ),
                     ),
                   ],
                 ),
               ] else ...[
+                Text("Kode: ${widget.history.id}",
+                    style: TextStyle(fontSize: 16)),
+                SizedBox(
+                  height: 16,
+                ),
                 Text("Status: ${widget.history.status}",
                     style: TextStyle(fontSize: 16)),
               ],

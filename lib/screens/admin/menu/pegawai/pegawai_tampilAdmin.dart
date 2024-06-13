@@ -23,7 +23,7 @@ class _TampilPegawaiAdminState extends State<TampilPegawaiAdmin> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text("Pegawai Admin"),
+          title: Text("Pegawai"),
           backgroundColor: Color.fromRGBO(231, 229, 93, 1)),
       body: FutureBuilder<List<Pegawai>>(
         future: _futurePegawai,

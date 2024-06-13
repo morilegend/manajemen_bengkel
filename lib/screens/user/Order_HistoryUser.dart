@@ -28,22 +28,42 @@ class _Order_HistoryUserState extends State<Order_HistoryUser> {
     }
   }
 
-  List<HistoryM> _filterHistoriesByStatus(List<HistoryM> histories) {
+  List<HistoryM> _filterAndSortByStatus(List<HistoryM> histories) {
+    List<HistoryM> filteredHistories;
+
     if (_selectedStatus == 'All') {
-      return histories;
+      filteredHistories = histories;
     } else {
-      return histories
+      filteredHistories = histories
           .where((history) => history.status == _selectedStatus)
           .toList();
     }
+
+    filteredHistories.sort((a, b) => b.orderDate.compareTo(a.orderDate));
+    return filteredHistories;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color.fromRGBO(231, 229, 93, 1),
-        title: Text('Order History'),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(40),
+        child: AppBar(
+          backgroundColor: Color.fromRGBO(231, 229, 93, 1),
+          elevation: 3,
+          shadowColor: Colors.black,
+          automaticallyImplyLeading: false,
+          title: Text(
+            "Order History",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(10),
+              bottomRight: Radius.circular(10),
+            ),
+          ),
+        ),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,7 +115,8 @@ class _Order_HistoryUserState extends State<Order_HistoryUser> {
                   return Center(child: Text('No history available'));
                 } else {
                   List<HistoryM> filteredHistories =
-                      _filterHistoriesByStatus(snapshot.data!);
+                      _filterAndSortByStatus(snapshot.data!);
+
                   return ListView.builder(
                     itemCount: filteredHistories.length,
                     itemBuilder: (BuildContext context, int index) {

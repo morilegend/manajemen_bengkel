@@ -8,6 +8,7 @@ import 'package:kp_manajemen_bengkel/screens/admin/menu/pegawai/pegawai_tampilAd
 import 'package:kp_manajemen_bengkel/screens/admin/order_admin.dart';
 import 'package:kp_manajemen_bengkel/screens/admin/tambah_news.dart';
 import 'package:kp_manajemen_bengkel/models/newsModels.dart';
+import 'package:kp_manajemen_bengkel/screens/admin/update_news.dart';
 import 'package:kp_manajemen_bengkel/services/newsServices.dart';
 import 'package:kp_manajemen_bengkel/models/historyModels.dart';
 import 'package:kp_manajemen_bengkel/services/historyServices.dart';
@@ -180,7 +181,7 @@ class _AdminHomeState extends State<AdminHome> {
                               borderRadius: BorderRadius.circular(30),
                             ),
                             child: IconButton(
-                              icon: Icon(Icons.attach_money),
+                              icon: Icon(Icons.car_crash),
                               iconSize: 35,
                               onPressed: () {
                                 Navigator.push(
@@ -194,7 +195,7 @@ class _AdminHomeState extends State<AdminHome> {
                             ),
                           ),
                           Text(
-                            'Jasa',
+                            'Services',
                             style: TextStyle(fontSize: 15),
                           ),
                         ],
@@ -208,7 +209,7 @@ class _AdminHomeState extends State<AdminHome> {
                               borderRadius: BorderRadius.circular(30),
                             ),
                             child: IconButton(
-                              icon: Icon(Icons.insert_chart),
+                              icon: Icon(Icons.people_alt),
                               iconSize: 35,
                               onPressed: () {
                                 Navigator.push(
@@ -222,7 +223,7 @@ class _AdminHomeState extends State<AdminHome> {
                               },
                             ),
                           ),
-                          Text('Pegawai'),
+                          Text('Employee'),
                         ],
                       ),
                       Column(
@@ -234,7 +235,7 @@ class _AdminHomeState extends State<AdminHome> {
                               borderRadius: BorderRadius.circular(30),
                             ),
                             child: IconButton(
-                              icon: Icon(Icons.settings),
+                              icon: Icon(Icons.book),
                               iconSize: 35,
                               onPressed: () {
                                 Navigator.push(
@@ -247,7 +248,7 @@ class _AdminHomeState extends State<AdminHome> {
                               },
                             ),
                           ),
-                          Text('Laporan'),
+                          Text('Report'),
                         ],
                       ),
                     ],
@@ -372,6 +373,8 @@ class _AdminHomeState extends State<AdminHome> {
                                               bottom: Radius.circular(10)),
                                         ),
                                         child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
                                           children: [
                                             Expanded(
                                               child: Text(
@@ -381,6 +384,62 @@ class _AdminHomeState extends State<AdminHome> {
                                                     fontSize: 15.0),
                                                 overflow: TextOverflow.fade,
                                               ),
+                                            ),
+                                            //Edut
+                                            IconButton(
+                                              icon: Icon(Icons.edit,
+                                                  color: Colors.black),
+                                              onPressed: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        EditNewsScreen(
+                                                            newsData: newsGet),
+                                                  ),
+                                                ).then((_) {
+                                                  _initializeData();
+                                                });
+                                              },
+                                            ),
+                                            //Delete
+                                            IconButton(
+                                              icon: Icon(Icons.delete,
+                                                  color: Colors.black),
+                                              onPressed: () async {
+                                                bool confirm = await showDialog(
+                                                  context: context,
+                                                  builder: (context) =>
+                                                      AlertDialog(
+                                                    content: Text(
+                                                        'Apakah kamu ingin menghapus news ini?'),
+                                                    actions: [
+                                                      TextButton(
+                                                        onPressed: () =>
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop(false),
+                                                        child: Text('Cancel'),
+                                                      ),
+                                                      TextButton(
+                                                        onPressed: () =>
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop(true),
+                                                        child: Text('Delete'),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                                if (confirm) {
+                                                  await _newsService.deleteNews(
+                                                      newsGet.id ?? '');
+                                                  setState(() {
+                                                    _newsFuture =
+                                                        _newsService.getNews();
+                                                  });
+                                                }
+                                              },
                                             ),
                                           ],
                                         ),

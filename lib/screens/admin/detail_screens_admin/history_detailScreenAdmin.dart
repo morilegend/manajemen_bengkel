@@ -167,13 +167,16 @@ class _HistoryDetailScreenAdminState extends State<HistoryDetailScreenAdmin> {
                         _updateHistory();
                       }
                     },
-                    child: Text(widget.history.status == 'Waiting'
-                        ? 'Berikan Harga'
-                        : widget.history.status == 'Approved'
-                            ? 'Repairing'
-                            : widget.history.status == 'Repairing'
-                                ? 'Done'
-                                : 'Sedang Menunggu User'),
+                    child: Text(
+                      widget.history.status == 'Waiting'
+                          ? 'Berikan Harga'
+                          : widget.history.status == 'Approved'
+                              ? 'Repairing'
+                              : widget.history.status == 'Repairing'
+                                  ? 'Done'
+                                  : 'Orderan Telah Selesai',
+                      style: TextStyle(color: Colors.black),
+                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color.fromRGBO(231, 229, 93, 1),
                     ),

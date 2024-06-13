@@ -91,9 +91,9 @@ class _AccountUserState extends State<AccountUser> {
                 child: Text(
                   'Account Management',
                   style: TextStyle(
-                    color: Color.fromARGB(223, 209, 209, 209),
-                    fontSize: 15,
-                  ),
+                      color: Colors.black,
+                      fontSize: 19,
+                      fontWeight: FontWeight.bold),
                 ),
               ),
               Divider(
@@ -159,9 +159,9 @@ class _AccountUserState extends State<AccountUser> {
                 child: Text(
                   'Pengaturan Lainnya',
                   style: TextStyle(
-                    color: Color.fromARGB(255, 209, 209, 209),
-                    fontSize: 15,
-                  ),
+                      color: Colors.black,
+                      fontSize: 19,
+                      fontWeight: FontWeight.bold),
                 ),
               ),
               Divider(
@@ -199,7 +199,12 @@ class _AccountUserState extends State<AccountUser> {
             alignment: Alignment.bottomCenter,
             child: Padding(
               padding: const EdgeInsets.only(top: 10, bottom: 110),
-              child: TextButton(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromRGBO(231, 229, 93, 1),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(7),
+                    )),
                 onPressed: () {
                   FirebaseAuth.instance.signOut();
                   Navigator.of(context).pushReplacement(

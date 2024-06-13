@@ -38,7 +38,7 @@ class _OrderAdminState extends State<OrderAdmin> {
     });
   }
 
-  List<HistoryM> _filterAndSortHistories(List<HistoryM> histories) {
+  List<HistoryM> _filterAndSortByStatus(List<HistoryM> histories) {
     List<HistoryM> filteredHistories;
 
     if (_selectedStatus == 'All') {
@@ -59,6 +59,7 @@ class _OrderAdminState extends State<OrderAdmin> {
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(231, 229, 93, 1),
         title: Text('All Orders'),
+        automaticallyImplyLeading: false,
       ),
       body: Column(
         children: [
@@ -109,7 +110,7 @@ class _OrderAdminState extends State<OrderAdmin> {
                   return Center(child: Text('No history available'));
                 } else {
                   List<HistoryM> filteredHistories =
-                      _filterAndSortHistories(snapshot.data!);
+                      _filterAndSortByStatus(snapshot.data!);
                   return ListView.builder(
                     itemCount: filteredHistories.length,
                     itemBuilder: (BuildContext context, int index) {

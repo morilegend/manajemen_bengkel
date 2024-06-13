@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:kp_manajemen_bengkel/models/newsModels.dart';
@@ -36,6 +35,19 @@ class NewsService {
       print('Error uploading image: $e');
       return null;
     }
+  }
+
+  Future<void> deleteNews(String newsId) async {
+    await FirebaseFirestore.instance.collection('news').doc(newsId).delete();
+  }
+
+  Future<void> updateNews(NewsM news) async {
+    await FirebaseFirestore.instance.collection('news').doc(news.id).update({
+      'tittle': news.tittle,
+      'descr': news.description,
+      'urlimage': news.urlImage,
+      'date': news.date,
+    });
   }
 
   Future<void> addNews(String tittle, String description, Timestamp date,
