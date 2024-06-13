@@ -42,7 +42,7 @@ class _HistoryDetailScreenAdminState extends State<HistoryDetailScreenAdmin> {
       if (widget.history.status == "Approved") {
         if (_selectedPegawaiId == null) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Please select a pegawai')),
+            SnackBar(content: Text('Pilih pegawai yang akan repairing')),
           );
           return;
         }
@@ -63,8 +63,7 @@ class _HistoryDetailScreenAdminState extends State<HistoryDetailScreenAdmin> {
       Navigator.pop(context, updatedHistory);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text('Please enter a valid price and select a pegawai')),
+        SnackBar(content: Text('Masukkan harga dan pegawai yang valid')),
       );
     }
   }
@@ -82,7 +81,7 @@ class _HistoryDetailScreenAdminState extends State<HistoryDetailScreenAdmin> {
       Navigator.pop(context, updatedHistory);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please enter a valid price')),
+        SnackBar(content: Text('Masukkan harga yang valid')),
       );
     }
   }
@@ -106,8 +105,10 @@ class _HistoryDetailScreenAdminState extends State<HistoryDetailScreenAdmin> {
               Text('Services:', style: TextStyle(fontSize: 16)),
               ...widget.history.services.map((service) {
                 String serviceName = service['name'];
-                double harga1 = service['harga1'];
-                double? harga2 = service['harga2'];
+                double harga1 = (service['harga1'] as num).toDouble();
+                double? harga2 = service['harga2'] != null
+                    ? (service['harga2'] as num).toDouble()
+                    : null;
                 String hargaText =
                     harga2 != null ? 'Rp.$harga1 - Rp.$harga2' : 'Rp.$harga1';
                 return Text('$serviceName: $hargaText');
@@ -171,10 +172,12 @@ class _HistoryDetailScreenAdminState extends State<HistoryDetailScreenAdmin> {
                       widget.history.status == 'Waiting'
                           ? 'Berikan Harga'
                           : widget.history.status == 'Approved'
-                              ? 'Repairing'
-                              : widget.history.status == 'Repairing'
-                                  ? 'Done'
-                                  : 'Orderan Telah Selesai',
+                              ? 'Lakukan Repairing'
+                              : widget.history.status == "Pending"
+                                  ? 'Sedang Menunggu User'
+                                  : widget.history.status == "Repairing"
+                                      ? "Done"
+                                      : "Telah Selesai",
                       style: TextStyle(color: Colors.black),
                     ),
                     style: ElevatedButton.styleFrom(
@@ -183,8 +186,10 @@ class _HistoryDetailScreenAdminState extends State<HistoryDetailScreenAdmin> {
                   ),
                 ),
               ] else ...[
-                Text("This order has been canceled and cannot be modified.",
-                    style: TextStyle(color: Colors.red)),
+                Center(
+                  child: Text("User Telah Mengcancel Orderan",
+                      style: TextStyle(color: Colors.red)),
+                ),
               ],
             ],
           ),
