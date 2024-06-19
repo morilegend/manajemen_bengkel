@@ -115,7 +115,7 @@ class _OrderAdminState extends State<OrderAdmin> {
                     itemCount: filteredHistories.length,
                     itemBuilder: (BuildContext context, int index) {
                       HistoryM history = filteredHistories[index];
-                      String formattedDate = DateFormat('dd MMM yyyy, HH:mm')
+                      String formattedDate = DateFormat('dd/MM/yyyy, HH:mm')
                           .format(history.orderDate);
 
                       return Column(

@@ -115,4 +115,16 @@ class HistoryService {
       throw Exception('Failed to calculate income: $e');
     }
   }
+
+  static Future<List<HistoryM>> getDoneHistories() async {
+    try {
+      QuerySnapshot querySnapshot =
+          await _historyCollection.where('status', isEqualTo: 'Done').get();
+      return querySnapshot.docs.map((doc) {
+        return HistoryM.fromMap(doc.data() as Map<String, dynamic>, doc.id);
+      }).toList();
+    } catch (e) {
+      throw Exception('Failed to get done histories: $e');
+    }
+  }
 }

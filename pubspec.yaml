@@ -23,7 +23,8 @@ dependencies:
   image_picker: ^1.1.1
   firebase_storage: ^11.7.6
   path: ^1.9.0
-  intl: ^0.19.0
+  intl: ^0.18.1 #Ganti intl dari versi 0.19.0
+  flutter_date_pickers: ^0.4.3
 
 dev_dependencies:
   flutter_test:

@@ -9,7 +9,7 @@ class HistoryM {
   int? price;
   double? harga1;
   double? harga2;
-  String? pegawaiId; // Add this field
+  String? pegawaiId;
 
   HistoryM({
     this.id,
@@ -22,7 +22,7 @@ class HistoryM {
     required this.notes,
     required this.status,
     required this.orderDate,
-    this.pegawaiId, // Add this field
+    this.pegawaiId,
   });
 
   Map<String, dynamic> toMap() {
