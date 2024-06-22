@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kp_manajemen_bengkel/models/historyModels.dart';
 import 'package:kp_manajemen_bengkel/screens/admin/detail_screens_admin/history_detailScreenAdmin.dart';
 import 'package:kp_manajemen_bengkel/services/historyServices.dart';
@@ -14,7 +13,6 @@ class OrderAdmin extends StatefulWidget {
 
 class _OrderAdminState extends State<OrderAdmin> {
   late Future<List<HistoryM>> _futureHistories;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   String _selectedStatus = 'All';
 
   @override

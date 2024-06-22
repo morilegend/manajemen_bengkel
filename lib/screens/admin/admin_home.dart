@@ -1,15 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:kp_manajemen_bengkel/screens/admin/account_admin.dart';
-import 'package:kp_manajemen_bengkel/screens/admin/detail_screens_admin/news_detailScreenAdmin.dart';
 import 'package:kp_manajemen_bengkel/screens/admin/menu/jasa/jasa_tampilAdmin.dart';
 import 'package:kp_manajemen_bengkel/screens/admin/menu/laporan_admin.dart';
 import 'package:kp_manajemen_bengkel/screens/admin/menu/pegawai/pegawai_tampilAdmin.dart';
-import 'package:kp_manajemen_bengkel/screens/admin/order_admin.dart';
-import 'package:kp_manajemen_bengkel/screens/admin/tambah_news.dart';
-import 'package:kp_manajemen_bengkel/models/newsModels.dart';
-import 'package:kp_manajemen_bengkel/screens/admin/update_news.dart';
-import 'package:kp_manajemen_bengkel/services/newsServices.dart';
 import 'package:kp_manajemen_bengkel/models/historyModels.dart';
 import 'package:kp_manajemen_bengkel/services/historyServices.dart';
 import 'package:intl/intl.dart';
@@ -22,11 +14,6 @@ class AdminHome extends StatefulWidget {
 }
 
 class _AdminHomeState extends State<AdminHome> {
-  late Future<List<NewsM>?> _newsFuture;
-  late Future<List<HistoryM>> _historyFuture;
-  final NewsService _newsService = NewsService();
-  final HistoryService _historyService = HistoryService();
-  String _searchText = '';
   int _dailyIncome = 0;
   int _monthlyIncome = 0;
 
@@ -43,8 +30,6 @@ class _AdminHomeState extends State<AdminHome> {
   }
 
   void _initializeData() {
-    _newsFuture = _newsService.getNews();
-    _historyFuture = HistoryService.getAllHistories();
     _calculateIncome();
   }
 

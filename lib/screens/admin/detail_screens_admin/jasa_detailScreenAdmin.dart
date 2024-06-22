@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:kp_manajemen_bengkel/models/servicesModels.dart';
-import 'package:kp_manajemen_bengkel/screens/user/detail_screens_user/Screen_BookOrderNow.dart';
 
 class DetailServiceScreen extends StatelessWidget {
   final ServiceM service;
@@ -25,7 +24,7 @@ class DetailServiceScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               Text(
-                'Harga: Rp${service.harga1?.toInt()}${service.harga2 != null ? ' s/d Rp${service.harga2!.toInt()}' : ''}',
+                'Price: Rp${service.harga1?.toInt()}${service.harga2 != null ? ' s/d Rp${service.harga2!.toInt()}' : ''}',
                 style: TextStyle(fontSize: 16),
               ),
               SizedBox(

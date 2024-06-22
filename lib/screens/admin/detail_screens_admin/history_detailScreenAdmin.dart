@@ -139,7 +139,7 @@ class _HistoryDetailScreenAdminState extends State<HistoryDetailScreenAdmin> {
                       } else if (snapshot.hasError) {
                         return Text("Error: ${snapshot.error}");
                       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        return Text("No Pegawai available");
+                        return Text("No Workers available");
                       } else {
                         List<Pegawai> pegawaiList = snapshot.data!;
                         return DropdownButton<String>(
@@ -190,7 +190,7 @@ class _HistoryDetailScreenAdminState extends State<HistoryDetailScreenAdmin> {
                 ),
               ] else ...[
                 Center(
-                  child: Text("User Telah Mengcancel Orderan",
+                  child: Text("User Canceled Orders",
                       style: TextStyle(color: Colors.red)),
                 ),
               ],
