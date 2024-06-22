@@ -100,6 +100,10 @@ class _HistoryDetailScreenUserState extends State<HistoryDetailScreenUser> {
                 'Car Type: ${widget.history.carType}',
                 style: TextStyle(fontSize: 16),
               ),
+              Text(
+                'Car Plate: ${widget.history.licensePlate}',
+                style: TextStyle(fontSize: 16),
+              ),
               SizedBox(height: 16),
               Text('Notes: ${widget.history.notes}',
                   style: TextStyle(fontSize: 16)),

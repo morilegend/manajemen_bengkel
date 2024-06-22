@@ -3,15 +3,17 @@ import 'package:kp_manajemen_bengkel/models/servicesModels.dart';
 import 'package:kp_manajemen_bengkel/screens/user/detail_screens_user/services_detailScreenUser.dart';
 import 'package:kp_manajemen_bengkel/screens/user/detail_screens_user/Screen_BookOrderNow.dart';
 import 'package:kp_manajemen_bengkel/services/services.dart';
+import 'package:kp_manajemen_bengkel/services/userServices.dart';
 
-class ServicesUser extends StatefulWidget {
-  const ServicesUser({Key? key}) : super(key: key);
+class UserHome extends StatefulWidget {
+  const UserHome({Key? key}) : super(key: key);
 
   @override
-  State<ServicesUser> createState() => _ServicesUserState();
+  State<UserHome> createState() => _UserHomeState();
 }
 
-class _ServicesUserState extends State<ServicesUser> {
+class _UserHomeState extends State<UserHome> {
+  final UserData getUserData = UserData();
   final ServiceService serviceService = ServiceService();
 
   @override
@@ -32,6 +34,7 @@ class _ServicesUserState extends State<ServicesUser> {
         ),
         title: DefaultTextStyle(
           style: TextStyle(
+            textBaseline: TextBaseline.alphabetic,
             color: Colors.white,
           ),
           child: Column(
@@ -41,16 +44,33 @@ class _ServicesUserState extends State<ServicesUser> {
                 width: double.infinity,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Services List',
+                      'Welcome,',
                       style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                        fontSize: 16,
+                        color: Color.fromARGB(255, 75, 73, 73),
                       ),
-                    )
+                    ),
+                    Container(
+                      width: 190,
+                      height: 31,
+                      child: FutureBuilder<Map<dynamic, dynamic>?>(
+                        future: getUserData.getUser(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<Map<dynamic, dynamic>?> snapshot) {
+                          return Text(
+                            snapshot.data?["username"] ?? "",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),

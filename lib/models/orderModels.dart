@@ -6,6 +6,7 @@ class OrderM {
   String notes;
   String status;
   DateTime orderDate;
+  String licensePlate; // Tambahkan field licensePlate
 
   OrderM({
     this.id,
@@ -15,6 +16,7 @@ class OrderM {
     required this.notes,
     required this.status,
     required this.orderDate,
+    required this.licensePlate, // Tambahkan ke konstruktor
   });
 
   Map<String, dynamic> toMap() {
@@ -26,6 +28,7 @@ class OrderM {
       'notes': notes,
       'status': status,
       'orderDate': orderDate.toIso8601String(),
+      'licensePlate': licensePlate, // Tambahkan ke map
     };
   }
 
@@ -38,6 +41,7 @@ class OrderM {
       notes: map['notes'],
       status: map['status'],
       orderDate: DateTime.parse(map['orderDate']),
+      licensePlate: map['licensePlate'], // Ambil dari map
     );
   }
 }

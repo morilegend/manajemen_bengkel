@@ -42,6 +42,7 @@ class OrderService {
       notes: order.notes,
       status: order.status,
       orderDate: order.orderDate,
+      licensePlate: order.licensePlate,
     );
     await HistoryService.addHistory(history);
   }

@@ -10,6 +10,7 @@ class HistoryM {
   double? harga1;
   double? harga2;
   String? pegawaiId;
+  String? licensePlate; // Tambahkan field licensePlate
 
   HistoryM({
     this.id,
@@ -23,6 +24,7 @@ class HistoryM {
     required this.status,
     required this.orderDate,
     this.pegawaiId,
+    this.licensePlate, // Tambahkan ke konstruktor
   });
 
   Map<String, dynamic> toMap() {
@@ -37,7 +39,8 @@ class HistoryM {
       'price': price,
       'harga1': harga1,
       'harga2': harga2,
-      'pegawaiId': pegawaiId, // Add this field
+      'pegawaiId': pegawaiId,
+      'licensePlate': licensePlate, // Tambahkan ke map
     };
   }
 
@@ -54,6 +57,7 @@ class HistoryM {
       harga1: map['harga1'],
       harga2: map['harga2'],
       pegawaiId: map['pegawaiId'],
+      licensePlate: map['licensePlate'], // Ambil dari map
     );
   }
 
@@ -69,6 +73,7 @@ class HistoryM {
     double? harga1,
     double? harga2,
     String? pegawaiId,
+    String? licensePlate, // Tambahkan ke copyWith
   }) {
     return HistoryM(
       id: id ?? this.id,
@@ -82,6 +87,7 @@ class HistoryM {
       harga1: harga1 ?? this.harga1,
       harga2: harga2 ?? this.harga2,
       pegawaiId: pegawaiId ?? this.pegawaiId,
+      licensePlate: licensePlate ?? this.licensePlate, // Salin dari yang ada
     );
   }
 }

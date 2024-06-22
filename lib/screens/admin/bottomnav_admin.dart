@@ -55,7 +55,7 @@ class NavbarAdminState extends State<NavbarAdmin> {
               ),
               GButton(
                 icon: Icons.person,
-                text: 'Account',
+                text: 'Settings',
               ),
             ],
             selectedIndex: _selectedIndex,

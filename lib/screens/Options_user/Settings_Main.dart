@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kp_manajemen_bengkel/screens/mainscreen/login.dart';
 import 'package:kp_manajemen_bengkel/screens/Options_user/screenChangePassword.dart';
-import 'package:kp_manajemen_bengkel/screens/Options_user/screenChangeEmail.dart';
 import 'package:kp_manajemen_bengkel/screens/Options_user/screenChangeNumber.dart';
 import 'package:kp_manajemen_bengkel/screens/Options_user/screenChangeUsername.dart';
 import 'package:kp_manajemen_bengkel/services/userServices.dart';
@@ -103,7 +102,7 @@ class _AccountUserState extends State<AccountUser> {
               ListTile(
                 visualDensity: VisualDensity(vertical: -4),
                 title: Text(
-                  'Ganti Password',
+                  'Change Password',
                   style: TextStyle(fontSize: 16),
                 ),
                 onTap: () {
@@ -121,7 +120,7 @@ class _AccountUserState extends State<AccountUser> {
               ListTile(
                 visualDensity: VisualDensity(vertical: -4),
                 title: Text(
-                  'Ganti Nomor HP',
+                  'Change Number',
                   style: TextStyle(fontSize: 16),
                 ),
                 onTap: () {
@@ -138,7 +137,7 @@ class _AccountUserState extends State<AccountUser> {
               ListTile(
                 visualDensity: VisualDensity(vertical: -4),
                 title: Text(
-                  'Ganti Username',
+                  'Change Name',
                   style: TextStyle(fontSize: 16),
                 ),
                 onTap: () {
@@ -151,46 +150,6 @@ class _AccountUserState extends State<AccountUser> {
               Divider(
                 thickness: 1,
                 color: Colors.black,
-              ),
-
-              //Pengaturan Lainnya
-              Padding(
-                padding: const EdgeInsets.only(top: 20, right: 10, left: 10),
-                child: Text(
-                  'Pengaturan Lainnya',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 19,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-              Divider(
-                thickness: 1,
-                color: Colors.black,
-              ),
-              ListTile(
-                visualDensity: VisualDensity(vertical: -4),
-                title: Text(
-                  'Notifikasi',
-                  style: TextStyle(fontSize: 16),
-                ),
-                onTap: () {
-                  // changeUsername();
-                },
-              ),
-              Divider(
-                thickness: 1,
-                color: Colors.black,
-              ),
-              ListTile(
-                visualDensity: VisualDensity(vertical: -4),
-                title: Text(
-                  'Dark Mode',
-                  style: TextStyle(fontSize: 16),
-                ),
-                onTap: () {
-                  // changeUsername();
-                },
               ),
             ],
           ),

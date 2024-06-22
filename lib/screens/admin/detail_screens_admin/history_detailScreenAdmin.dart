@@ -102,6 +102,9 @@ class _HistoryDetailScreenAdminState extends State<HistoryDetailScreenAdmin> {
               Text('Car Type: ${widget.history.carType}',
                   style: TextStyle(fontSize: 16)),
               SizedBox(height: 16),
+              Text(' Car Plate: ${widget.history.licensePlate}',
+                  style: TextStyle(fontSize: 16)),
+              SizedBox(height: 16),
               Text('Services:', style: TextStyle(fontSize: 16)),
               ...widget.history.services.map((service) {
                 String serviceName = service['name'];

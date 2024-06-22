@@ -1,11 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kp_manajemen_bengkel/screens/user/Services_User.dart';
 import 'package:kp_manajemen_bengkel/screens/user/Order_HistoryUser.dart';
 import 'package:kp_manajemen_bengkel/screens/Options_user/Settings_Main.dart';
-import 'package:kp_manajemen_bengkel/screens/user/favorite_news.dart';
-import 'package:kp_manajemen_bengkel/screens/user/user_home(news).dart';
-import 'package:lottie/lottie.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 class NavbarUser extends StatefulWidget {
@@ -17,7 +13,6 @@ class NavbarUserState extends State<NavbarUser> {
   int _selectedIndex = 0;
   static List<Widget> _widgetOptions = <Widget>[
     UserHome(),
-    ServicesUser(),
     Order_HistoryUser(),
     AccountUser(),
   ];
@@ -53,10 +48,6 @@ class NavbarUserState extends State<NavbarUser> {
               GButton(
                 icon: Icons.home,
                 text: 'Home',
-              ),
-              GButton(
-                icon: Icons.car_crash,
-                text: 'Services',
               ),
               GButton(
                 icon: Icons.note_alt,

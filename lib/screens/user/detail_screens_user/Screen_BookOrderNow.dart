@@ -15,6 +15,7 @@ class Screen_BookOrderNow extends StatefulWidget {
 
 final TextEditingController carTypeController = TextEditingController();
 final TextEditingController notesController = TextEditingController();
+final TextEditingController licensePlateController = TextEditingController();
 
 class _Screen_BookOrderNowState extends State<Screen_BookOrderNow> {
   List<ServiceM> availableServices = [];
@@ -107,7 +108,7 @@ class _Screen_BookOrderNowState extends State<Screen_BookOrderNow> {
                       padding: const EdgeInsets.only(top: 10.0),
                       child: Center(
                         child: Text(
-                          'Kosong',
+                          'Empty',
                           style: TextStyle(color: Colors.grey, fontSize: 13),
                         ),
                       ),
@@ -140,14 +141,27 @@ class _Screen_BookOrderNowState extends State<Screen_BookOrderNow> {
                   backgroundColor: Color.fromRGBO(231, 229, 93, 1),
                 ),
                 child: const Text(
-                  'Tambah Services',
+                  'Add Services',
                   style: TextStyle(
                       fontSize: 16, color: Color.fromARGB(255, 0, 0, 0)),
                 ),
               ),
               const SizedBox(height: 15),
               Text(
-                "Tipe Mobil (Optional)",
+                "Car Plate",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+              ),
+              TextFormField(
+                controller: licensePlateController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                ),
+                maxLines: null,
+              ),
+              const SizedBox(height: 15),
+              Text(
+                "Car Type (Optional)",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
               ),
               TextFormField(
@@ -199,13 +213,14 @@ class _Screen_BookOrderNowState extends State<Screen_BookOrderNow> {
                                   notes: notesController.text,
                                   services: selectedServices,
                                   orderDate: DateTime.now(),
+                                  licensePlate: licensePlateController.text,
                                   status: "Waiting",
                                 );
                                 await OrderService.addOrder(order);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                         content: Text(
-                                            'Berhasil Melakukan Booking')));
+                                            'Succesfully Booked Services')));
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(content: Text('Error')));
