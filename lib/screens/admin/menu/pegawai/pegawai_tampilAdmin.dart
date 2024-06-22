@@ -19,12 +19,26 @@ class _TampilPegawaiAdminState extends State<TampilPegawaiAdmin> {
     _futurePegawai = PegawaiService.getAllPegawai();
   }
 
+  void _deletePegawai(String id) async {
+    try {
+      await PegawaiService.deletePegawai(id);
+      setState(() {
+        _futurePegawai = PegawaiService.getAllPegawai();
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to delete pegawai: $e')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text("Pegawai"),
-          backgroundColor: Color.fromRGBO(231, 229, 93, 1)),
+        title: Text("Pegawai"),
+        backgroundColor: Color.fromRGBO(231, 229, 93, 1),
+      ),
       body: FutureBuilder<List<Pegawai>>(
         future: _futurePegawai,
         builder: (context, snapshot) {
@@ -45,6 +59,37 @@ class _TampilPegawaiAdminState extends State<TampilPegawaiAdmin> {
                     ListTile(
                       title: Text(pegawai.name),
                       subtitle: Text(pegawai.role),
+                      trailing: IconButton(
+                        icon: Icon(Icons.delete, color: Colors.black),
+                        onPressed: () {
+                          if (pegawai.id != null) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: Text(
+                                      'Apakah Anda Ingin Menghapus pegawai?'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('Cancel'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                        _deletePegawai(pegawai.id!);
+                                      },
+                                      child: Text('Delete'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
+                        },
+                      ),
                     ),
                     Divider(),
                   ],

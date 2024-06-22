@@ -26,4 +26,12 @@ class PegawaiService {
       throw Exception('Failed to get all pegawai: $e');
     }
   }
+
+  static Future<void> deletePegawai(String? id) async {
+    try {
+      await _pegawaiCollection.doc(id).delete();
+    } catch (e) {
+      throw Exception('Failed to delete pegawai: $e');
+    }
+  }
 }
