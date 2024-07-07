@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kp_manajemen_bengkel/screens/admin/admin_home.dart';
 import 'package:kp_manajemen_bengkel/screens/admin/order_admin.dart';
@@ -55,7 +54,7 @@ class NavbarAdminState extends State<NavbarAdmin> {
               ),
               GButton(
                 icon: Icons.person,
-                text: 'Settings',
+                text: 'Account',
               ),
             ],
             selectedIndex: _selectedIndex,

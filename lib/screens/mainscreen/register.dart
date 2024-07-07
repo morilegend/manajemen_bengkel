@@ -51,7 +51,7 @@ class _RegisterState extends State<Register> {
                 TextFormField(
                   controller: usernameController,
                   decoration: const InputDecoration(
-                    labelText: 'Nama',
+                    labelText: 'Name',
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10))),
                   ),
@@ -155,7 +155,7 @@ class _RegisterState extends State<Register> {
                 TextFormField(
                   obscureText: _showPassword2,
                   decoration: InputDecoration(
-                    labelText: 'Konfirmasi Password',
+                    labelText: 'Password Confirm',
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10))),
                     focusedBorder: const OutlineInputBorder(

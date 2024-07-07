@@ -37,7 +37,7 @@ class _TambahPegawaiAdminState extends State<TambahPegawaiAdmin> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Tambah Pegawai"),
+        title: Text("Add Employee"),
         backgroundColor: Color.fromRGBO(231, 229, 93, 1),
       ),
       body: Padding(

@@ -101,7 +101,7 @@ class _AdminHomeState extends State<AdminHome> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text(
-                              'Pendapatan Hari ini',
+                              'Today Incomes',
                               style: TextStyle(
                                   fontSize: 13,
                                   color: Color.fromARGB(201, 0, 0, 0)),
@@ -118,7 +118,7 @@ class _AdminHomeState extends State<AdminHome> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text(
-                              'Pendapatan Bulan ini',
+                              'Monthly Incomes',
                               style: TextStyle(
                                   fontSize: 13,
                                   color: Color.fromARGB(201, 0, 0, 0)),

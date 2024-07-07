@@ -42,7 +42,7 @@ class _HistoryDetailScreenAdminState extends State<HistoryDetailScreenAdmin> {
       if (widget.history.status == "Approved") {
         if (_selectedPegawaiId == null) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Pilih pegawai yang akan repairing')),
+            SnackBar(content: Text('Select Employee To Doing Services')),
           );
           return;
         }
@@ -63,7 +63,7 @@ class _HistoryDetailScreenAdminState extends State<HistoryDetailScreenAdmin> {
       Navigator.pop(context, updatedHistory);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Masukkan harga dan pegawai yang valid')),
+        SnackBar(content: Text('Create Validate Price')),
       );
     }
   }
@@ -129,7 +129,7 @@ class _HistoryDetailScreenAdminState extends State<HistoryDetailScreenAdmin> {
               if (widget.history.status != 'Canceled') ...[
                 if (widget.history.status == 'Approved' ||
                     widget.history.status == 'Repairing') ...[
-                  Text('Pegawai yang akan melakukan Repairing:',
+                  Text('Select Employee',
                       style: TextStyle(fontSize: 16)),
                   FutureBuilder<List<Pegawai>>(
                     future: _futurePegawai,
@@ -139,7 +139,7 @@ class _HistoryDetailScreenAdminState extends State<HistoryDetailScreenAdmin> {
                       } else if (snapshot.hasError) {
                         return Text("Error: ${snapshot.error}");
                       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        return Text("No Workers available");
+                        return Text("No Employee available");
                       } else {
                         List<Pegawai> pegawaiList = snapshot.data!;
                         return DropdownButton<String>(

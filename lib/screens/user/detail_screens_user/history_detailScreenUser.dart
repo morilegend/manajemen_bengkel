@@ -79,7 +79,7 @@ class _HistoryDetailScreenUserState extends State<HistoryDetailScreenUser> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Services Yang Dipilih',
+                'Selected Services',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               ...widget.history.services.map((service) {

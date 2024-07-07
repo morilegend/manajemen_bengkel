@@ -176,7 +176,7 @@ class _LoginState extends State<Login> {
                               );
                             },
                             child: Text(
-                              'Belum punya akun? Daftar sekarang!',
+                              'Dont Have An Account? Register Here',
                               style:
                                   TextStyle(fontSize: 12, color: Colors.indigo),
                             ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:kp_manajemen_bengkel/screens/admin/bottomnav_admin.dart';
+import 'package:kp_manajemen_bengkel/screens/mainscreen/login.dart';
 import 'package:kp_manajemen_bengkel/services/firebase_options.dart';
 
 //Import Screens
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
       //   brightness: Brightness.dark,
       // ),
       debugShowCheckedModeBanner: false,
-      home: NavbarAdmin(),
+      home: Login(),
     );
   }
 }

@@ -50,7 +50,7 @@ class _LaporanAdminState extends State<LaporanAdmin> {
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(231, 229, 93, 1),
         title: const Text(
-          'Laporan',
+          'Report',
           style: TextStyle(color: Colors.black),
         ),
         automaticallyImplyLeading: true,
@@ -64,7 +64,7 @@ class _LaporanAdminState extends State<LaporanAdmin> {
                 TextButton(
                   onPressed: _selectDateRange,
                   child: const Text(
-                    'Waktu:',
+                    'Times:',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
                   ),
                 ),
@@ -101,7 +101,7 @@ class _LaporanAdminState extends State<LaporanAdmin> {
                             child: Column(
                               children: [
                                 const Text(
-                                  'Total Pendapatan',
+                                  'Total Incomes',
                                   style: TextStyle(
                                       fontSize: 18,
                                       color: Color.fromARGB(201, 0, 0, 0)),
@@ -171,7 +171,7 @@ class _LaporanAdminState extends State<LaporanAdmin> {
                                     'Total Price: Rp${NumberFormat("#,###").format(history.price ?? 0)}',
                                   ),
                                   Text(
-                                    'Tanggal Pesanan: ${DateFormat('dd/MM/yyyy').format(history.orderDate)}',
+                                    'Order Date: ${DateFormat('dd/MM/yyyy').format(history.orderDate)}',
                                   ),
                                 ],
                               ),
