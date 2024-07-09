@@ -5,11 +5,9 @@ This Project Using Flutter + Firebase
 
 - Admin
 - Can Check Report,
-- Create News
 - Can Create New Items
 
 - Users
-- Can Check News
 - Can Buy Services
 - Can Check History About Services
   
