@@ -13,8 +13,7 @@ class OrderService {
       DocumentReference docRef = await _ordersCollection.add(order.toMap());
       order.id = docRef.id;
       await docRef.update({'id': docRef.id});
-      await addOrderToHistory(
-          order); // Tambahkan pesanan ke history setelah menambahkannya ke orders
+      await addOrderToHistory(order);
     } catch (e) {
       throw Exception('Failed to add order: $e');
     }
@@ -42,6 +41,7 @@ class OrderService {
       notes: order.notes,
       status: order.status,
       orderDate: order.orderDate,
+      reservationDate: order.reservationDate,
       licensePlate: order.licensePlate,
     );
     await HistoryService.addHistory(history);

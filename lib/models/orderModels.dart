@@ -6,7 +6,8 @@ class OrderM {
   String notes;
   String status;
   DateTime orderDate;
-  String licensePlate; // Tambahkan field licensePlate
+  DateTime reservationDate;
+  String licensePlate;
 
   OrderM({
     this.id,
@@ -16,7 +17,8 @@ class OrderM {
     required this.notes,
     required this.status,
     required this.orderDate,
-    required this.licensePlate, // Tambahkan ke konstruktor
+    required this.reservationDate,
+    required this.licensePlate,
   });
 
   Map<String, dynamic> toMap() {
@@ -28,7 +30,8 @@ class OrderM {
       'notes': notes,
       'status': status,
       'orderDate': orderDate.toIso8601String(),
-      'licensePlate': licensePlate, // Tambahkan ke map
+      'reservationDate': reservationDate.toIso8601String(),
+      'licensePlate': licensePlate,
     };
   }
 
@@ -41,7 +44,8 @@ class OrderM {
       notes: map['notes'],
       status: map['status'],
       orderDate: DateTime.parse(map['orderDate']),
-      licensePlate: map['licensePlate'], // Ambil dari map
+      reservationDate: DateTime.parse(map['reservationDate']),
+      licensePlate: map['licensePlate'],
     );
   }
 }

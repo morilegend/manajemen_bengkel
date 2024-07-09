@@ -1,8 +1,11 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:kp_manajemen_bengkel/models/historyModels.dart';
 import 'package:kp_manajemen_bengkel/models/pegawaiModels.dart';
 import 'package:kp_manajemen_bengkel/services/historyServices.dart';
 import 'package:kp_manajemen_bengkel/services/pegawaiServices.dart';
+import 'package:image_picker/image_picker.dart';
 
 class HistoryDetailScreenAdmin extends StatefulWidget {
   final HistoryM history;
@@ -18,6 +21,9 @@ class _HistoryDetailScreenAdminState extends State<HistoryDetailScreenAdmin> {
   late TextEditingController _priceController;
   late Future<List<Pegawai>> _futurePegawai;
   String? _selectedPegawaiId;
+  File? _beforeImageFile;
+  File? _afterImageFile;
+  final ImagePicker _picker = ImagePicker();
 
   @override
   void initState() {
@@ -48,15 +54,41 @@ class _HistoryDetailScreenAdminState extends State<HistoryDetailScreenAdmin> {
         }
         newStatus = "Repairing";
       } else if (widget.history.status == "Repairing") {
+        if (_beforeImageFile == null || _afterImageFile == null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Upload before and after images')),
+          );
+          return;
+        }
         newStatus = "Done";
       } else {
         return;
+      }
+
+      String? beforeImageUrl;
+      if (_beforeImageFile != null) {
+        beforeImageUrl = await HistoryService.uploadImage(
+            _beforeImageFile!, 'images/beforeCar');
+        if (widget.history.beforeCarImageUrl != null) {
+          await HistoryService.deleteImage(widget.history.beforeCarImageUrl!);
+        }
+      }
+
+      String? afterImageUrl;
+      if (_afterImageFile != null && newStatus == "Done") {
+        afterImageUrl = await HistoryService.uploadImage(
+            _afterImageFile!, 'images/afterCar');
+        if (widget.history.afterCarImageUrl != null) {
+          await HistoryService.deleteImage(widget.history.afterCarImageUrl!);
+        }
       }
 
       HistoryM updatedHistory = widget.history.copyWith(
         price: newPrice,
         status: newStatus,
         pegawaiId: _selectedPegawaiId,
+        beforeCarImageUrl: beforeImageUrl ?? widget.history.beforeCarImageUrl,
+        afterCarImageUrl: afterImageUrl ?? widget.history.afterCarImageUrl,
       );
 
       await HistoryService.updateHistory(updatedHistory);
@@ -72,9 +104,13 @@ class _HistoryDetailScreenAdminState extends State<HistoryDetailScreenAdmin> {
     int? newPrice = int.tryParse(_priceController.text);
 
     if (newPrice != null) {
+      String newStatus = widget.history.userId == '8QWQNEozu4XAHqMSOwdQWgCBkmR2'
+          ? 'Repairing'
+          : 'Pending';
+
       HistoryM updatedHistory = widget.history.copyWith(
         price: newPrice,
-        status: 'Pending',
+        status: newStatus,
       );
 
       await HistoryService.updateHistory(updatedHistory);
@@ -86,8 +122,33 @@ class _HistoryDetailScreenAdminState extends State<HistoryDetailScreenAdmin> {
     }
   }
 
+  Future<void> _pickBeforeImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _beforeImageFile = File(pickedFile.path);
+      });
+    }
+  }
+
+  Future<void> _pickAfterImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _afterImageFile = File(pickedFile.path);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final DateFormat dateFormat = DateFormat('dd-MM-yyyy');
+    final DateFormat timeFormat = DateFormat('HH:mm');
+    final String formattedDate =
+        dateFormat.format(widget.history.reservationDate);
+    final String formattedTime =
+        timeFormat.format(widget.history.reservationDate);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(231, 229, 93, 1),
@@ -101,9 +162,13 @@ class _HistoryDetailScreenAdminState extends State<HistoryDetailScreenAdmin> {
             children: [
               Text('Car Type: ${widget.history.carType}',
                   style: TextStyle(fontSize: 16)),
-              SizedBox(height: 16),
-              Text(' Car Plate: ${widget.history.licensePlate}',
+              Text('Car Plate: ${widget.history.licensePlate}',
                   style: TextStyle(fontSize: 16)),
+              SizedBox(height: 16),
+              Text('Reservation Date: $formattedDate',
+                  style: TextStyle(fontSize: 15)),
+              Text('Reservation Time: $formattedTime',
+                  style: TextStyle(fontSize: 15)),
               SizedBox(height: 16),
               Text('Services:', style: TextStyle(fontSize: 16)),
               ...widget.history.services.map((service) {
@@ -114,7 +179,10 @@ class _HistoryDetailScreenAdminState extends State<HistoryDetailScreenAdmin> {
                     : null;
                 String hargaText =
                     harga2 != null ? 'Rp.$harga1 - Rp.$harga2' : 'Rp.$harga1';
-                return Text('$serviceName: $hargaText');
+                return Text(
+                  '$serviceName: $hargaText',
+                  style: TextStyle(fontSize: 13),
+                );
               }).toList(),
               SizedBox(height: 16),
               Text('Notes: ${widget.history.notes}',
@@ -129,8 +197,7 @@ class _HistoryDetailScreenAdminState extends State<HistoryDetailScreenAdmin> {
               if (widget.history.status != 'Canceled') ...[
                 if (widget.history.status == 'Approved' ||
                     widget.history.status == 'Repairing') ...[
-                  Text('Select Employee',
-                      style: TextStyle(fontSize: 16)),
+                  Text('Select Employee', style: TextStyle(fontSize: 16)),
                   FutureBuilder<List<Pegawai>>(
                     future: _futurePegawai,
                     builder: (context, snapshot) {
@@ -159,6 +226,88 @@ class _HistoryDetailScreenAdminState extends State<HistoryDetailScreenAdmin> {
                         );
                       }
                     },
+                  ),
+                ],
+                SizedBox(height: 5),
+                if (widget.history.status == 'Repairing' ||
+                    widget.history.status == 'Done') ...[
+                  Center(
+                    child: Column(
+                      children: [
+                        Text(
+                          'Before',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        SizedBox(height: 8),
+                        GestureDetector(
+                          onTap: _pickBeforeImage,
+                          child: Container(
+                            width: 300,
+                            height: 150,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black, width: 2),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: _beforeImageFile != null
+                                ? Image.file(
+                                    _beforeImageFile!,
+                                    width: 300,
+                                    height: 150,
+                                    fit: BoxFit.cover,
+                                  )
+                                : widget.history.beforeCarImageUrl != null
+                                    ? Image.network(
+                                        widget.history.beforeCarImageUrl!,
+                                        width: 300,
+                                        height: 150,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Center(child: Text('Select Images')),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+                SizedBox(height: 16),
+                if (widget.history.status == 'Repairing' ||
+                    widget.history.status == 'Done') ...[
+                  Center(
+                    child: Column(
+                      children: [
+                        Text(
+                          'After',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        SizedBox(height: 8),
+                        GestureDetector(
+                          onTap: _pickAfterImage,
+                          child: Container(
+                            width: 300,
+                            height: 150,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black, width: 2),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: _afterImageFile != null
+                                ? Image.file(
+                                    _afterImageFile!,
+                                    width: 300,
+                                    height: 190,
+                                    fit: BoxFit.cover,
+                                  )
+                                : widget.history.afterCarImageUrl != null
+                                    ? Image.network(
+                                        widget.history.afterCarImageUrl!,
+                                        width: 300,
+                                        height: 150,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Center(child: Text('Select Images')),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
                 SizedBox(height: 32),

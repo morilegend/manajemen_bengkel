@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:kp_manajemen_bengkel/models/historyModels.dart';
 
 class HistoryService {
@@ -13,6 +15,28 @@ class HistoryService {
       await docRef.update({'id': docRef.id});
     } catch (e) {
       throw Exception('Failed to add history: $e');
+    }
+  }
+
+  static Future<String?> uploadImage(File imageFile, String path) async {
+    try {
+      String fileName = '$path/${DateTime.now().millisecondsSinceEpoch}.jpg';
+      Reference storageRef = FirebaseStorage.instance.ref().child(fileName);
+      UploadTask uploadTask = storageRef.putFile(imageFile);
+
+      TaskSnapshot taskSnapshot = await uploadTask;
+      return await taskSnapshot.ref.getDownloadURL();
+    } catch (e) {
+      throw Exception('Failed to upload image: $e');
+    }
+  }
+
+  static Future<void> deleteImage(String imageUrl) async {
+    try {
+      Reference storageRef = FirebaseStorage.instance.refFromURL(imageUrl);
+      await storageRef.delete();
+    } catch (e) {
+      throw Exception('Failed to delete image: $e');
     }
   }
 

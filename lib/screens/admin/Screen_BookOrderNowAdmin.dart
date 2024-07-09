@@ -6,18 +6,19 @@ import 'package:kp_manajemen_bengkel/screens/user/detail_screens_user/add_servic
 import 'package:kp_manajemen_bengkel/services/ordersServices.dart';
 import 'package:kp_manajemen_bengkel/services/services.dart';
 
-class Screen_BookOrderNow extends StatefulWidget {
-  const Screen_BookOrderNow({Key? key}) : super(key: key);
+class Screen_BookOrderNowAdmin extends StatefulWidget {
+  const Screen_BookOrderNowAdmin({Key? key}) : super(key: key);
 
   @override
-  State<Screen_BookOrderNow> createState() => _Screen_BookOrderNowState();
+  State<Screen_BookOrderNowAdmin> createState() =>
+      _Screen_BookOrderNowAdminState();
 }
 
 final TextEditingController carTypeController = TextEditingController();
 final TextEditingController notesController = TextEditingController();
 final TextEditingController licensePlateController = TextEditingController();
 
-class _Screen_BookOrderNowState extends State<Screen_BookOrderNow> {
+class _Screen_BookOrderNowAdminState extends State<Screen_BookOrderNowAdmin> {
   final _formKey = GlobalKey<FormState>();
   DateTime? _selectedReservationDate;
   TimeOfDay? _selectedReservationTime;

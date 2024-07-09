@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:kp_manajemen_bengkel/screens/admin/Screen_BookOrderNowAdmin.dart';
 import 'package:kp_manajemen_bengkel/screens/admin/menu/jasa/jasa_tampilAdmin.dart';
 import 'package:kp_manajemen_bengkel/screens/admin/menu/laporan_admin.dart';
 import 'package:kp_manajemen_bengkel/screens/admin/menu/pegawai/pegawai_tampilAdmin.dart';
 import 'package:kp_manajemen_bengkel/models/historyModels.dart';
+import 'package:kp_manajemen_bengkel/screens/user/detail_screens_user/Screen_BookOrderNow.dart';
 import 'package:kp_manajemen_bengkel/services/historyServices.dart';
 import 'package:intl/intl.dart';
 
@@ -73,178 +75,185 @@ class _AdminHomeState extends State<AdminHome> {
         automaticallyImplyLeading: false,
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              children: [
-                Container(
-                  height: 100,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  decoration: BoxDecoration(
-                    color: Color.fromRGBO(231, 229, 93, 1),
-                    borderRadius: BorderRadius.circular(6),
-                    boxShadow: [
-                      BoxShadow(
-                        blurRadius: 1,
-                        spreadRadius: 0.1,
-                      ),
-                    ],
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          children: [
+            Container(
+              height: 100,
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              decoration: BoxDecoration(
+                color: Color.fromRGBO(231, 229, 93, 1),
+                borderRadius: BorderRadius.circular(6),
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 1,
+                    spreadRadius: 0.1,
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Today Incomes',
-                              style: TextStyle(
-                                  fontSize: 13,
-                                  color: Color.fromARGB(201, 0, 0, 0)),
-                            ),
-                            Text(
-                              'Rp${NumberFormat("#,###").format(_dailyIncome)}',
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                          ],
+                ],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Today Incomes',
+                          style: TextStyle(
+                              fontSize: 13,
+                              color: Color.fromARGB(201, 0, 0, 0)),
                         ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Monthly Incomes',
-                              style: TextStyle(
-                                  fontSize: 13,
-                                  color: Color.fromARGB(201, 0, 0, 0)),
-                            ),
-                            Text(
-                              'Rp${NumberFormat("#,###").format(_monthlyIncome)}',
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                          ],
+                        Text(
+                          'Rp${NumberFormat("#,###").format(_dailyIncome)}',
+                          style: const TextStyle(fontSize: 16),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                // Menu Label
-                Row(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Menu',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
+                      ],
                     ),
-                  ],
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Monthly Incomes',
+                          style: TextStyle(
+                              fontSize: 13,
+                              color: Color.fromARGB(201, 0, 0, 0)),
+                        ),
+                        Text(
+                          'Rp${NumberFormat("#,###").format(_monthlyIncome)}',
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Menu Label
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Menu',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                // Icons with Text
-                Padding(
-                  padding: const EdgeInsets.only(top: 15, bottom: 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+              ),
+            ),
+            // Icons with Text
+            Padding(
+              padding: const EdgeInsets.only(top: 15, bottom: 5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _buildMenuItem(
+                    icon: Icons.car_crash,
+                    label: 'Services',
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TampilJasaAdmin()),
+                      ).then((_) {
+                        _initializeData();
+                      });
+                    },
+                  ),
+                  _buildMenuItem(
+                    icon: Icons.people_alt,
+                    label: 'Employee',
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TampilPegawaiAdmin()),
+                      ).then((_) {
+                        _initializeData();
+                      });
+                    },
+                  ),
+                  _buildMenuItem(
+                    icon: Icons.book,
+                    label: 'Report',
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => LaporanAdmin()),
+                      ).then((_) {
+                        _initializeData();
+                      });
+                    },
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(25),
+                  child: Column(
                     children: [
-                      Column(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Color.fromRGBO(231, 229, 93, 1),
-                              border: Border.all(),
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            child: IconButton(
-                              icon: Icon(Icons.car_crash),
-                              iconSize: 35,
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => TampilJasaAdmin()),
-                                ).then((_) {
-                                  _initializeData();
-                                });
-                              },
-                            ),
-                          ),
-                          Text(
-                            'Services',
-                            style: TextStyle(fontSize: 15),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Color.fromRGBO(231, 229, 93, 1),
-                              border: Border.all(),
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            child: IconButton(
-                              icon: Icon(Icons.people_alt),
-                              iconSize: 35,
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          TampilPegawaiAdmin()),
-                                ).then((_) {
-                                  _initializeData();
-                                });
-                              },
-                            ),
-                          ),
-                          Text('Employee'),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Color.fromRGBO(231, 229, 93, 1),
-                              border: Border.all(),
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            child: IconButton(
-                              icon: Icon(Icons.book),
-                              iconSize: 35,
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => LaporanAdmin()),
-                                ).then((_) {
-                                  _initializeData();
-                                });
-                              },
-                            ),
-                          ),
-                          Text('Report'),
-                        ],
+                      Container(
+                        height: 160,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 199, 196, 196),
+                          border: Border.all(width: 1),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: IconButton(
+                          icon: Icon(Icons.add),
+                          iconSize: 90,
+                          color: Colors.black,
+                          onPressed: () async {
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      Screen_BookOrderNowAdmin()),
+                            );
+                          },
+                        ),
                       ),
                     ],
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
-          Divider(thickness: 1),
-        ],
+            Divider(thickness: 1),
+          ],
+        ),
       ),
+    );
+  }
+
+  Widget _buildMenuItem({
+    required IconData icon,
+    required String label,
+    required VoidCallback onPressed,
+  }) {
+    return Column(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: Color.fromRGBO(231, 229, 93, 1),
+            border: Border.all(),
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: IconButton(
+            icon: Icon(icon),
+            iconSize: 35,
+            onPressed: onPressed,
+          ),
+        ),
+        Text(
+          label,
+          style: TextStyle(fontSize: 15),
+        ),
+      ],
     );
   }
 }

@@ -52,6 +52,14 @@ class _HistoryDetailScreenUserState extends State<HistoryDetailScreenUser> {
 
   @override
   Widget build(BuildContext context) {
+    //Var
+    final DateFormat dateFormat = DateFormat('dd-MM-yyyy');
+    final DateFormat timeFormat = DateFormat('HH:mm');
+    final String formattedDate =
+        dateFormat.format(widget.history.reservationDate);
+    final String formattedTime =
+        timeFormat.format(widget.history.reservationDate);
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(40),
@@ -105,6 +113,15 @@ class _HistoryDetailScreenUserState extends State<HistoryDetailScreenUser> {
                 style: TextStyle(fontSize: 16),
               ),
               SizedBox(height: 16),
+              Text(
+                'Reservation Date: $formattedDate',
+                style: TextStyle(fontSize: 16),
+              ),
+              Text(
+                'Reservation Time: $formattedTime',
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(height: 16),
               Text('Notes: ${widget.history.notes}',
                   style: TextStyle(fontSize: 16)),
               SizedBox(height: 16),
@@ -147,6 +164,50 @@ class _HistoryDetailScreenUserState extends State<HistoryDetailScreenUser> {
                 ),
                 Text("Status: ${widget.history.status}",
                     style: TextStyle(fontSize: 16)),
+              ],
+              SizedBox(height: 16),
+              if (widget.history.beforeCarImageUrl != null) ...[
+                Text(
+                  'Before',
+                  style: TextStyle(fontSize: 16),
+                ),
+                SizedBox(height: 8),
+                Container(
+                  width: 300,
+                  height: 150,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black, width: 2),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Image.network(
+                    widget.history.beforeCarImageUrl!,
+                    width: 300,
+                    height: 150,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ],
+              SizedBox(height: 16),
+              if (widget.history.afterCarImageUrl != null) ...[
+                Text(
+                  'After',
+                  style: TextStyle(fontSize: 16),
+                ),
+                SizedBox(height: 8),
+                Container(
+                  width: 300,
+                  height: 150,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black, width: 2),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Image.network(
+                    widget.history.afterCarImageUrl!,
+                    width: 300,
+                    height: 150,
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ],
             ],
           ),

@@ -6,11 +6,14 @@ class HistoryM {
   String notes;
   String status;
   DateTime orderDate;
+  DateTime reservationDate;
   int? price;
   double? harga1;
   double? harga2;
   String? pegawaiId;
-  String? licensePlate; // Tambahkan field licensePlate
+  String? licensePlate;
+  String? beforeCarImageUrl;
+  String? afterCarImageUrl;
 
   HistoryM({
     this.id,
@@ -23,8 +26,11 @@ class HistoryM {
     required this.notes,
     required this.status,
     required this.orderDate,
+    required this.reservationDate,
     this.pegawaiId,
-    this.licensePlate, // Tambahkan ke konstruktor
+    this.licensePlate,
+    this.beforeCarImageUrl,
+    this.afterCarImageUrl,
   });
 
   Map<String, dynamic> toMap() {
@@ -36,11 +42,14 @@ class HistoryM {
       'notes': notes,
       'status': status,
       'orderDate': orderDate.toIso8601String(),
+      'reservationDate': reservationDate.toIso8601String(),
       'price': price,
       'harga1': harga1,
       'harga2': harga2,
       'pegawaiId': pegawaiId,
-      'licensePlate': licensePlate, // Tambahkan ke map
+      'licensePlate': licensePlate,
+      'beforeCarImageUrl': beforeCarImageUrl,
+      'afterCarImageUrl': afterCarImageUrl,
     };
   }
 
@@ -53,11 +62,14 @@ class HistoryM {
       notes: map['notes'],
       status: map['status'],
       orderDate: DateTime.parse(map['orderDate']),
+      reservationDate: DateTime.parse(map['reservationDate']),
       price: map['price'],
       harga1: map['harga1'],
       harga2: map['harga2'],
       pegawaiId: map['pegawaiId'],
-      licensePlate: map['licensePlate'], // Ambil dari map
+      licensePlate: map['licensePlate'],
+      beforeCarImageUrl: map['beforeCarImageUrl'],
+      afterCarImageUrl: map['afterCarImageUrl'],
     );
   }
 
@@ -69,11 +81,14 @@ class HistoryM {
     String? notes,
     String? status,
     DateTime? orderDate,
+    DateTime? reservationDate,
     int? price,
     double? harga1,
     double? harga2,
     String? pegawaiId,
-    String? licensePlate, // Tambahkan ke copyWith
+    String? licensePlate,
+    String? beforeCarImageUrl,
+    String? afterCarImageUrl,
   }) {
     return HistoryM(
       id: id ?? this.id,
@@ -83,11 +98,14 @@ class HistoryM {
       notes: notes ?? this.notes,
       status: status ?? this.status,
       orderDate: orderDate ?? this.orderDate,
+      reservationDate: reservationDate ?? this.reservationDate,
       price: price ?? this.price,
       harga1: harga1 ?? this.harga1,
       harga2: harga2 ?? this.harga2,
       pegawaiId: pegawaiId ?? this.pegawaiId,
-      licensePlate: licensePlate ?? this.licensePlate, // Salin dari yang ada
+      licensePlate: licensePlate ?? this.licensePlate,
+      beforeCarImageUrl: beforeCarImageUrl ?? this.beforeCarImageUrl,
+      afterCarImageUrl: afterCarImageUrl ?? this.afterCarImageUrl,
     );
   }
 }
