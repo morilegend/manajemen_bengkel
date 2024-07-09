@@ -205,7 +205,7 @@ class _Screen_BookOrderNowAdminState extends State<Screen_BookOrderNowAdmin> {
                 ),
                 const SizedBox(height: 15),
                 Text(
-                  "Car Licenses",
+                  "License Plate",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
                 ),
                 TextFormField(

@@ -1,11 +1,10 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:kp_manajemen_bengkel/models/historyModels.dart';
 import 'package:kp_manajemen_bengkel/models/pegawaiModels.dart';
 import 'package:kp_manajemen_bengkel/services/historyServices.dart';
 import 'package:kp_manajemen_bengkel/services/pegawaiServices.dart';
 import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class HistoryDetailScreenAdmin extends StatefulWidget {
   final HistoryM history;
@@ -51,12 +50,17 @@ class _HistoryDetailScreenAdminState extends State<HistoryDetailScreenAdmin> {
             SnackBar(content: Text('Select Employee To Doing Services')),
           );
           return;
+        } else if (_beforeImageFile == null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Select Before Images')),
+          );
+          return;
         }
         newStatus = "Repairing";
       } else if (widget.history.status == "Repairing") {
-        if (_beforeImageFile == null || _afterImageFile == null) {
+        if (_afterImageFile == null) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Upload before and after images')),
+            SnackBar(content: Text('Select After Images')),
           );
           return;
         }
@@ -105,7 +109,7 @@ class _HistoryDetailScreenAdminState extends State<HistoryDetailScreenAdmin> {
 
     if (newPrice != null) {
       String newStatus = widget.history.userId == '8QWQNEozu4XAHqMSOwdQWgCBkmR2'
-          ? 'Repairing'
+          ? 'Approved'
           : 'Pending';
 
       HistoryM updatedHistory = widget.history.copyWith(
@@ -142,13 +146,6 @@ class _HistoryDetailScreenAdminState extends State<HistoryDetailScreenAdmin> {
 
   @override
   Widget build(BuildContext context) {
-    final DateFormat dateFormat = DateFormat('dd-MM-yyyy');
-    final DateFormat timeFormat = DateFormat('HH:mm');
-    final String formattedDate =
-        dateFormat.format(widget.history.reservationDate);
-    final String formattedTime =
-        timeFormat.format(widget.history.reservationDate);
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(231, 229, 93, 1),
@@ -162,13 +159,6 @@ class _HistoryDetailScreenAdminState extends State<HistoryDetailScreenAdmin> {
             children: [
               Text('Car Type: ${widget.history.carType}',
                   style: TextStyle(fontSize: 16)),
-              Text('Car Plate: ${widget.history.licensePlate}',
-                  style: TextStyle(fontSize: 16)),
-              SizedBox(height: 16),
-              Text('Reservation Date: $formattedDate',
-                  style: TextStyle(fontSize: 15)),
-              Text('Reservation Time: $formattedTime',
-                  style: TextStyle(fontSize: 15)),
               SizedBox(height: 16),
               Text('Services:', style: TextStyle(fontSize: 16)),
               ...widget.history.services.map((service) {
@@ -179,10 +169,7 @@ class _HistoryDetailScreenAdminState extends State<HistoryDetailScreenAdmin> {
                     : null;
                 String hargaText =
                     harga2 != null ? 'Rp.$harga1 - Rp.$harga2' : 'Rp.$harga1';
-                return Text(
-                  '$serviceName: $hargaText',
-                  style: TextStyle(fontSize: 13),
-                );
+                return Text('$serviceName: $hargaText');
               }).toList(),
               SizedBox(height: 16),
               Text('Notes: ${widget.history.notes}',
@@ -195,9 +182,9 @@ class _HistoryDetailScreenAdminState extends State<HistoryDetailScreenAdmin> {
               ),
               SizedBox(height: 16),
               if (widget.history.status != 'Canceled') ...[
-                if (widget.history.status == 'Approved' ||
-                    widget.history.status == 'Repairing') ...[
-                  Text('Select Employee', style: TextStyle(fontSize: 16)),
+                if (widget.history.status == 'Approved') ...[
+                  Text('Pegawai yang akan melakukan Repairing:',
+                      style: TextStyle(fontSize: 16)),
                   FutureBuilder<List<Pegawai>>(
                     future: _futurePegawai,
                     builder: (context, snapshot) {
@@ -206,7 +193,7 @@ class _HistoryDetailScreenAdminState extends State<HistoryDetailScreenAdmin> {
                       } else if (snapshot.hasError) {
                         return Text("Error: ${snapshot.error}");
                       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        return Text("No Employee available");
+                        return Text("No Pegawai available");
                       } else {
                         List<Pegawai> pegawaiList = snapshot.data!;
                         return DropdownButton<String>(
@@ -227,86 +214,47 @@ class _HistoryDetailScreenAdminState extends State<HistoryDetailScreenAdmin> {
                       }
                     },
                   ),
-                ],
-                SizedBox(height: 5),
-                if (widget.history.status == 'Repairing' ||
-                    widget.history.status == 'Done') ...[
-                  Center(
-                    child: Column(
-                      children: [
-                        Text(
-                          'Before',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        SizedBox(height: 8),
-                        GestureDetector(
-                          onTap: _pickBeforeImage,
-                          child: Container(
-                            width: 300,
-                            height: 150,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black, width: 2),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: _beforeImageFile != null
-                                ? Image.file(
-                                    _beforeImageFile!,
-                                    width: 300,
-                                    height: 150,
-                                    fit: BoxFit.cover,
-                                  )
-                                : widget.history.beforeCarImageUrl != null
-                                    ? Image.network(
-                                        widget.history.beforeCarImageUrl!,
-                                        width: 300,
-                                        height: 150,
-                                        fit: BoxFit.cover,
-                                      )
-                                    : Center(child: Text('Select Images')),
-                          ),
-                        ),
-                      ],
+                  SizedBox(height: 16),
+                  Text('Upload Before Image', style: TextStyle(fontSize: 16)),
+                  GestureDetector(
+                    onTap: _pickBeforeImage,
+                    child: Container(
+                      width: 300,
+                      height: 150,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black, width: 2),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: _beforeImageFile != null
+                          ? Image.file(
+                              _beforeImageFile!,
+                              width: 300,
+                              height: 190,
+                              fit: BoxFit.cover,
+                            )
+                          : Center(child: Text('Select Before Image')),
                     ),
                   ),
                 ],
-                SizedBox(height: 16),
-                if (widget.history.status == 'Repairing' ||
-                    widget.history.status == 'Done') ...[
-                  Center(
-                    child: Column(
-                      children: [
-                        Text(
-                          'After',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        SizedBox(height: 8),
-                        GestureDetector(
-                          onTap: _pickAfterImage,
-                          child: Container(
-                            width: 300,
-                            height: 150,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black, width: 2),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: _afterImageFile != null
-                                ? Image.file(
-                                    _afterImageFile!,
-                                    width: 300,
-                                    height: 190,
-                                    fit: BoxFit.cover,
-                                  )
-                                : widget.history.afterCarImageUrl != null
-                                    ? Image.network(
-                                        widget.history.afterCarImageUrl!,
-                                        width: 300,
-                                        height: 150,
-                                        fit: BoxFit.cover,
-                                      )
-                                    : Center(child: Text('Select Images')),
-                          ),
-                        ),
-                      ],
+                if (widget.history.status == 'Repairing') ...[
+                  Text('Upload After Image', style: TextStyle(fontSize: 16)),
+                  GestureDetector(
+                    onTap: _pickAfterImage,
+                    child: Container(
+                      width: 300,
+                      height: 150,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black, width: 2),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: _afterImageFile != null
+                          ? Image.file(
+                              _afterImageFile!,
+                              width: 300,
+                              height: 190,
+                              fit: BoxFit.cover,
+                            )
+                          : Center(child: Text('Select After Image')),
                     ),
                   ),
                 ],
@@ -337,9 +285,47 @@ class _HistoryDetailScreenAdminState extends State<HistoryDetailScreenAdmin> {
                     ),
                   ),
                 ),
+                if (widget.history.status == 'Done') ...[
+                  SizedBox(height: 16),
+                  Text('Before Image', style: TextStyle(fontSize: 16)),
+                  Container(
+                    width: 300,
+                    height: 150,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black, width: 2),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: widget.history.beforeCarImageUrl != null
+                        ? Image.network(
+                            widget.history.beforeCarImageUrl!,
+                            width: 300,
+                            height: 190,
+                            fit: BoxFit.cover,
+                          )
+                        : Center(child: Text('No Before Image')),
+                  ),
+                  SizedBox(height: 16),
+                  Text('After Image', style: TextStyle(fontSize: 16)),
+                  Container(
+                    width: 300,
+                    height: 150,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black, width: 2),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: widget.history.afterCarImageUrl != null
+                        ? Image.network(
+                            widget.history.afterCarImageUrl!,
+                            width: 300,
+                            height: 190,
+                            fit: BoxFit.cover,
+                          )
+                        : Center(child: Text('No After Image')),
+                  ),
+                ],
               ] else ...[
                 Center(
-                  child: Text("User Canceled Orders",
+                  child: Text("User Telah Mengcancel Orderan",
                       style: TextStyle(color: Colors.red)),
                 ),
               ],

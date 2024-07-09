@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kp_manajemen_bengkel/screens/admin/Screen_BookOrderNowAdmin.dart';
 import 'package:kp_manajemen_bengkel/screens/admin/menu/jasa/jasa_tampilAdmin.dart';
 import 'package:kp_manajemen_bengkel/screens/admin/menu/laporan_admin.dart';
 import 'package:kp_manajemen_bengkel/screens/admin/menu/pegawai/pegawai_tampilAdmin.dart';
@@ -190,40 +189,33 @@ class _AdminHomeState extends State<AdminHome> {
                 ],
               ),
             ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(25),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 160,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 199, 196, 196),
-                          border: Border.all(width: 1),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: IconButton(
-                          icon: Icon(Icons.add),
-                          iconSize: 90,
-                          color: Colors.black,
-                          onPressed: () async {
-                            await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      Screen_BookOrderNowAdmin()),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
+            Divider(thickness: 1),
+            Padding(
+              padding: const EdgeInsets.only(top: 200),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Screen_BookOrderNow(),
+                    ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromRGBO(231, 229, 93, 1),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: Text(
+                  'Add Order',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
                   ),
                 ),
               ),
             ),
-            Divider(thickness: 1),
           ],
         ),
       ),
