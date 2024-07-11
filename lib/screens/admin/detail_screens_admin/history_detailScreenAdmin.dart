@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:kp_manajemen_bengkel/models/historyModels.dart';
 import 'package:kp_manajemen_bengkel/models/pegawaiModels.dart';
 import 'package:kp_manajemen_bengkel/services/historyServices.dart';
@@ -146,6 +147,13 @@ class _HistoryDetailScreenAdminState extends State<HistoryDetailScreenAdmin> {
 
   @override
   Widget build(BuildContext context) {
+    final DateFormat dateFormat = DateFormat('dd-MM-yyyy');
+    final DateFormat timeFormat = DateFormat('HH:mm');
+    final String formattedDate =
+        dateFormat.format(widget.history.reservationDate);
+    final String formattedTime =
+        timeFormat.format(widget.history.reservationDate);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(231, 229, 93, 1),
@@ -175,6 +183,12 @@ class _HistoryDetailScreenAdminState extends State<HistoryDetailScreenAdmin> {
               Text('Notes: ${widget.history.notes}',
                   style: TextStyle(fontSize: 16)),
               SizedBox(height: 16),
+
+              //Reservation
+              Text('Reservation Date: ${formattedDate}',
+                  style: TextStyle(fontSize: 16)),
+              Text('Reservation Time: ${formattedTime}',
+                  style: TextStyle(fontSize: 16)),
               TextField(
                 controller: _priceController,
                 decoration: InputDecoration(labelText: 'Price'),

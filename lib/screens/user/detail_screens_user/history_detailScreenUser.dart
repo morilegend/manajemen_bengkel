@@ -109,7 +109,7 @@ class _HistoryDetailScreenUserState extends State<HistoryDetailScreenUser> {
                 style: TextStyle(fontSize: 16),
               ),
               Text(
-                'Car Plate: ${widget.history.licensePlate}',
+                'Licenses Plate: ${widget.history.licensePlate}',
                 style: TextStyle(fontSize: 16),
               ),
               SizedBox(height: 16),

@@ -72,7 +72,7 @@ class _Screen_BookOrderNowState extends State<Screen_BookOrderNow> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(231, 229, 93, 1),
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: true,
         elevation: 3,
         shadowColor: Colors.black,
         shape: RoundedRectangleBorder(
