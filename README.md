@@ -3,7 +3,7 @@
 - 2.Download Android Studio
 - 3.Run From Vscode (Using Start Debugging Or flutter web renderer)
 
-# Manajemen Bengkel For GAC (Garagae Auto Clean)
+# Manajemen Bengkel For GAC (Garage Auto Clinic)
 
 This Project Using Flutter + Firebase
 - 2 User (Admin,Customer)
